@@ -1,4 +1,5 @@
 #pragma once
+#include "Core.h"
 #include "hzpch.h"
 
 namespace Basic

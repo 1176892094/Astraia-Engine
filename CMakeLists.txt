@@ -33,3 +33,12 @@ target_include_directories(Basic PUBLIC ${PROJECT_SOURCE_DIR}/ThirdParty/glfw/in
 add_executable(Astraia Sandbox/main.cpp)
 
 target_link_libraries(Astraia PRIVATE Basic)
+
+# 链接 GLFW 库
+target_link_libraries(Basic PUBLIC
+        ${CMAKE_SOURCE_DIR}/ThirdParty/glfw/lib-arm64/libglfw3.a  # 或 dylib
+        "-framework Cocoa"
+        "-framework OpenGL"
+        "-framework IOKit"
+        "-framework CoreVideo"
+)
