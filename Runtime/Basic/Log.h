@@ -1,7 +1,7 @@
 #pragma once
-#include "spdlog/spdlog.h"
 #include "memory"
 #include "Core.h"
+#include "spdlog/spdlog.h"
 
 namespace Basic
 {

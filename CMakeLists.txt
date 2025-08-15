@@ -4,21 +4,24 @@ project(Astraia)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(Basic SHARED
+        Runtime/Basic/Events/ApplicationEvent.h
+        Runtime/Basic/Events/Event.h
+        Runtime/Basic/Events/KeyEvent.h
+        Runtime/Basic/Events/MouseEvent.h
+
         Runtime/Basic/Application.cpp
         Runtime/Basic/Application.h
         Runtime/Basic/Core.h
         Runtime/Basic/EntryPoint.h
         Runtime/Basic/Log.cpp
-        Runtime/Basic/Log.h)
+        Runtime/Basic/Log.h
+)
+
+
 
 target_include_directories(Basic PUBLIC Runtime/Basic)
 target_include_directories(Basic PUBLIC ${PROJECT_SOURCE_DIR}/ThirdParty/spdlog/include)
 
-add_executable(Astraia Sandbox/main.cpp
-        Test.cpp
-        Runtime/Basic/Events/ApplicationEvent.h
-        Runtime/Basic/Events/Event.h
-        Runtime/Basic/Events/KeyEvent.h
-        Runtime/Basic/Events/MouseEvent.h)
+add_executable(Astraia Sandbox/main.cpp)
 
 target_link_libraries(Astraia PRIVATE Basic)

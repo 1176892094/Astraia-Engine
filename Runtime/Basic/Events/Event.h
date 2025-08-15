@@ -1,9 +1,5 @@
 #pragma once
-
-#include "Core.h"
-#include <string>
-#include <sstream>
-#include <functional>
+#include "hzpch.h"
 
 namespace Basic
 {

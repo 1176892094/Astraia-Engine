@@ -1,6 +1,7 @@
+#include "hzpch.h"
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
 #include "Log.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Basic
 {
@@ -15,7 +16,14 @@ namespace Basic
     void Application::Run()
     {
         WindowResizeEvent e(1280,720);
-        AE_TRACE(e.ToString());
+        if (e.IsInCategory(EventCategoryApplication))
+        {
+            AE_TRACE(e.ToString());
+        }
+        if (e.IsInCategory(EventCategoryInput))
+        {
+            AE_TRACE(e.ToString());
+        }
         while (true);
     }
 }
