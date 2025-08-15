@@ -5,7 +5,7 @@
 
 namespace Basic
 {
-    class ASTRAIA_API Log
+    class Log
     {
     public:
         static void Init();

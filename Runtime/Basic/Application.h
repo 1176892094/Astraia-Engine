@@ -1,15 +1,20 @@
 #include "Core.h"
+#include "Window.h"
 
 namespace Basic
 {
-    class ASTRAIA_API Application
+    class Application
     {
     public:
         Application();
 
         virtual ~Application();
 
-        static void Run();
+        void Run() const;
+
+    private:
+        std::unique_ptr<Window> m_Window;
+        bool m_Running = true;
     };
 
     Application* CreateApplication();
