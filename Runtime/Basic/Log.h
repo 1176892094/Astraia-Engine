@@ -1,14 +1,20 @@
-//
-// Created by 云谷千羽 on 2025/8/15.
-//
+#pragma once
+#include "spdlog/spdlog.h"
+#include "memory"
+#include "Core.h"
 
-#ifndef ASTRAIA_LOG_H
-#define ASTRAIA_LOG_H
-
-
-class Log
+namespace Basic
 {
-};
+    class ASTRAIA_API Log
+    {
+    public:
+        static void Init();
 
+        inline static std::shared_ptr<spdlog::logger> &GetCoreLogger() { return s_CoreLogger; }
+        inline static std::shared_ptr<spdlog::logger> &GetClientLogger() { return s_ClientLogger; }
 
-#endif //ASTRAIA_LOG_H
+    private:
+        static std::shared_ptr<spdlog::logger> s_CoreLogger;
+        static std::shared_ptr<spdlog::logger> s_ClientLogger;
+    };
+}
