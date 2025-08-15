@@ -39,6 +39,7 @@ namespace Basic
         {
             int success = glfwInit();
             AE_CORE_ASSERT(success, "Could not initialize GLFW");
+            glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
         }
 

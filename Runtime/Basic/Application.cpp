@@ -18,7 +18,9 @@ namespace Basic
 
     void Application::OnEvent(Event &e)
     {
-        AE_CORE_INFO("{0}", e.ToString());
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        AE_CORE_TRACE("{0}", e.ToString());
     }
 
     void Application::Run() const
@@ -29,5 +31,11 @@ namespace Basic
             glClear(GL_COLOR_BUFFER_BIT);
             m_Window->OnUpdate();
         }
+    }
+
+    bool Application::OnWindowClose(WindowCloseEvent &e)
+    {
+        m_Running = false;
+        return true;
     }
 }
