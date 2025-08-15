@@ -1,7 +1,7 @@
+#include "glad/glad.h"
 #include "MacWindow.h"
 
 #include "Events/ApplicationEvent.h"
-#include "Events/Event.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
@@ -45,6 +45,8 @@ namespace Basic
 
         m_Window = glfwCreateWindow((int) props.Width, (int) props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+        AE_CORE_ASSERT(status, "Failed to initializ GLAD");
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 

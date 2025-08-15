@@ -24,6 +24,7 @@ public:
     Sandbox()
     {
         PushLayer(new ExamplePlayer());
+        PushOverlay(new Basic::ImGuiLayer());
     }
 
     ~Sandbox()
