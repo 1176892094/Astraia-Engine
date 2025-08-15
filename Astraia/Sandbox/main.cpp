@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "../Basic.h"
 
 class Sandbox : public Basic::Application
@@ -14,7 +12,7 @@ public:
     }
 };
 
-Basic::Application* CreateApplication()
+Basic::Application *Basic::CreateApplication()
 {
     return new Sandbox();
 }
