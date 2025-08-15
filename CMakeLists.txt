@@ -24,6 +24,10 @@ add_library(Basic SHARED
         Runtime/Basic/Platform/Windows/MacWindow.h
         Runtime/Basic/KeyCodes.h
         Runtime/Basic/MouseCodes.h
+        Runtime/Basic/Layer.cpp
+        Runtime/Basic/Layer.h
+        Runtime/Basic/LayerStack.cpp
+        Runtime/Basic/LayerStack.h
 )
 
 
