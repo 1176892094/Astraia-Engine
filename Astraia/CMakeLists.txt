@@ -3,11 +3,11 @@ project(Astraia)
 
 set(CMAKE_CXX_STANDARD 20)
 
+add_library(Basic SHARED src/Basic/Application.cpp)
 
-add_library(Runtime SHARED Library/Test.cpp)
+target_include_directories(Basic PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Basic)
 
-target_include_directories(Runtime PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Library)
+add_executable(Astraia main.cpp
+        src/Basic/EntryPoint.h)
 
-add_executable(Astraia main.cpp)
-
-target_link_libraries(Astraia PRIVATE Runtime)
+target_link_libraries(Astraia PRIVATE Basic)
