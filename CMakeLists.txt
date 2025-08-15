@@ -22,6 +22,8 @@ add_library(Basic SHARED
         Runtime/Basic/Window.h
         Runtime/Basic/Platform/Windows/MacWindow.cpp
         Runtime/Basic/Platform/Windows/MacWindow.h
+        Runtime/Basic/KeyCodes.h
+        Runtime/Basic/MouseCodes.h
 )
 
 

@@ -12,6 +12,8 @@ namespace Basic
 
         void Run() const;
 
+        void OnEvent(Event& e);
+
     private:
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
