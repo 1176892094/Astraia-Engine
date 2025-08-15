@@ -15,6 +15,10 @@ target_include_directories(Basic PUBLIC Runtime/Basic)
 target_include_directories(Basic PUBLIC ${PROJECT_SOURCE_DIR}/ThirdParty/spdlog/include)
 
 add_executable(Astraia Sandbox/main.cpp
-        Test.cpp)
+        Test.cpp
+        Runtime/Basic/Events/ApplicationEvent.h
+        Runtime/Basic/Events/Event.h
+        Runtime/Basic/Events/KeyEvent.h
+        Runtime/Basic/Events/MouseEvent.h)
 
 target_link_libraries(Astraia PRIVATE Basic)
