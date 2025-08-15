@@ -12,4 +12,6 @@ namespace Basic
 
         static void Run();
     };
+
+    Application* CreateApplication();
 }

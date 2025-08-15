@@ -1,8 +1,10 @@
-//
-// Created by 云谷千羽 on 2025/8/15.
-//
+#include "../Basic.h"
 
-#ifndef ASTRAIA_ENTRYPOINT_H
-#define ASTRAIA_ENTRYPOINT_H
+extern Basic::Application *CreateApplication();
 
-#endif //ASTRAIA_ENTRYPOINT_H
+int main(int argc, char **argv)
+{
+    auto app = Basic::CreateApplication();
+    app->Run();
+    delete app;
+}

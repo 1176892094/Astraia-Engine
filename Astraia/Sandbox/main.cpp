@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "src/Basic.h"
+#include "../Basic.h"
 
 class Sandbox : public Basic::Application
 {
@@ -14,10 +14,7 @@ public:
     }
 };
 
-int main()
+Basic::Application* CreateApplication()
 {
-    Sandbox *sandbox = new Sandbox();
-    sandbox->Run();
-    delete sandbox;
-    return 0;
+    return new Sandbox();
 }
