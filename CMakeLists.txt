@@ -13,6 +13,10 @@ add_library(source SHARED
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Platform/MacOS/MacInput.cpp
         Runtime/Platform/OpenGL/OpenGLContext.cpp
+        Runtime/Source/Core/Shader.cpp
+        Runtime/Source/Renderer/Renderer.cpp
+        Runtime/Source/Renderer/Buffer.cpp
+        Runtime/Platform/OpenGL/OpenGLBuffer.cpp
 
         Plugins/glad/src/glad.c
 
@@ -22,10 +26,8 @@ add_library(source SHARED
         Plugins/imgui/imgui_widgets.cpp
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
-        Plugins/imgui/backends/imgui_impl_opengl3.cpp
-        Runtime/Source/Core/Shader.cpp
-        Runtime/Source/Core/Shader.h
-)
+        Plugins/imgui/backends/imgui_impl_opengl3.cpp)
+
 
 target_include_directories(source PUBLIC
         Runtime
