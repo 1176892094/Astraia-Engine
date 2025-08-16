@@ -9,11 +9,11 @@ add_library(source SHARED
         Runtime/Source/Core/Log.cpp
         Runtime/Source/Core/Layer.cpp
         Runtime/Source/Core/LayerStack.cpp
-        Runtime/Source/Core/Shader.cpp
         Runtime/Source/GUI/ImGuiLayer.cpp
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Platform/MacOS/MacInput.cpp
 
+        Runtime/Source/Renderer/Shader.cpp
         Runtime/Source/Renderer/Renderer.cpp
         Runtime/Source/Renderer/Buffer.cpp
         Runtime/Source/Renderer/VertexArray.cpp

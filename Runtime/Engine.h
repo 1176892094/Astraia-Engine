@@ -8,7 +8,7 @@
 #include "Source/Core/Log.h"
 #include "Source/Core/Layer.h"
 #include "Source/Core/Input.h"
-#include "Source/Core/Shader.h"
+#include "Source/Renderer/Shader.h"
 #include "Source/Core/KeyCodes.h"
 #include "Source/Core/MouseCodes.h"
 // -----------------------------------
