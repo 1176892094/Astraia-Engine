@@ -1,7 +1,21 @@
-#include <iostream>
+#include <Hazel.h>
 
-int main()
+class Sandbox : public Hazel::Application
 {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+public:
+    Sandbox()
+    {
+
+    }
+
+    ~Sandbox()
+    {
+
+    }
+
+};
+
+Hazel::Application* Hazel::CreateApplication()
+{
+    return new Sandbox();
 }
