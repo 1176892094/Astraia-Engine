@@ -14,20 +14,23 @@ add_library(source SHARED
         Runtime/Platform/MacOS/MacInput.cpp
 
         Runtime/Source/Renderer/Shader.cpp
+        Runtime/Source/Renderer/Texture.cpp
+        Runtime/Source/Renderer/RendererAPI.cpp
         Runtime/Source/Renderer/Renderer.cpp
         Runtime/Source/Renderer/Buffer.cpp
         Runtime/Source/Renderer/VertexArray.cpp
-        Runtime/Source/Renderer/RendererAPI.cpp
         Runtime/Source/Renderer/RenderCommand.cpp
         Runtime/Source/Renderer/OrthographicCamera.cpp
 
         Runtime/Platform/OpenGL/OpenGLShader.cpp
+        Runtime/Platform/OpenGL/OpenGLTexture.cpp
+        Runtime/Platform/OpenGL/OpenGLRendererAPI.cpp
         Runtime/Platform/OpenGL/OpenGLContext.cpp
         Runtime/Platform/OpenGL/OpenGLBuffer.cpp
         Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
-        Runtime/Platform/OpenGL/OpenGLRendererAPI.cpp
 
         Plugins/glad/src/glad.c
+        Plugins/stb/include/stb_image.cpp
 
         Plugins/imgui/imgui.cpp
         Plugins/imgui/imgui_draw.cpp
@@ -36,13 +39,14 @@ add_library(source SHARED
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-)
 
+)
 
 target_include_directories(source PUBLIC
         Runtime
         Plugins/glm
         Plugins/imgui
+        Plugins/stb/include
         Plugins/glfw/include
         Plugins/glad/include
         Plugins/spdlog/include)

@@ -16,6 +16,7 @@
 #include "Source/GUI/ImGuiLayer.h"
 
 // ---Renderer------------------------
+#include "Source/Renderer/Texture.h"
 #include "Source/Renderer/Renderer.h"
 #include "Source/Renderer/RenderCommand.h"
 #include "Source/Renderer/Buffer.h"
