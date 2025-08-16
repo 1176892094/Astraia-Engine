@@ -12,6 +12,7 @@ add_library(source SHARED
         Runtime/Source/GUI/ImGuiLayer.cpp
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Platform/MacOS/MacInput.cpp
+        Runtime/Platform/OpenGL/OpenGLContext.cpp
 
         Plugins/glad/src/glad.c
 

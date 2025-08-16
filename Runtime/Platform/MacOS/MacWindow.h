@@ -2,6 +2,7 @@
 
 #include "Source/Core/Window.h"
 #include <GLFW/glfw3.h>
+#include "Source/Renderer/GraphicsContext.h"
 
 namespace Engine
 {
@@ -31,6 +32,8 @@ namespace Engine
         virtual void Shutdown();
 
         GLFWwindow *m_Window;
+
+        GraphicsContext* m_Context;
 
         struct WindowData
         {
