@@ -11,7 +11,6 @@ add_library(source SHARED
         Runtime/Source/Core/LayerStack.cpp
         Runtime/Source/GUI/ImGuiLayer.cpp
         Runtime/Platform/MacOS/MacWindow.cpp
-        Runtime/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
         Runtime/Platform/MacOS/MacInput.cpp
 
         Plugins/glad/src/glad.c
@@ -22,10 +21,11 @@ add_library(source SHARED
         Plugins/imgui/imgui_widgets.cpp
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
- )
+)
 
 target_include_directories(source PUBLIC
         Runtime
+        Plugins/glm
         Plugins/imgui
         Plugins/glfw/include
         Plugins/glad/include
