@@ -21,6 +21,7 @@ add_library(source SHARED
         Runtime/Source/Renderer/RenderCommand.cpp
         Runtime/Source/Renderer/OrthographicCamera.cpp
 
+        Runtime/Platform/OpenGL/OpenGLShader.cpp
         Runtime/Platform/OpenGL/OpenGLContext.cpp
         Runtime/Platform/OpenGL/OpenGLBuffer.cpp
         Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
