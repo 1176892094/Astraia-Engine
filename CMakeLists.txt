@@ -21,6 +21,7 @@ add_library(source SHARED
         Plugins/imgui/imgui_widgets.cpp
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
+        Plugins/imgui/backends/imgui_impl_opengl3.cpp
 )
 
 target_include_directories(source PUBLIC

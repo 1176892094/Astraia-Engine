@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "imgui.h"
 
 class ExampleLayer : public Engine::Layer
 {
@@ -23,6 +24,13 @@ public:
             HZ_TRACE("{0}", (char)e.GetKeyCode());
         }
     }
+
+    virtual void OnImGuiRender() override
+    {
+        ImGui::Begin("Test");
+        ImGui::Text("Hello World");
+        ImGui::End();
+    }
 };
 
 class Sandbox : public Engine::Application
@@ -31,7 +39,7 @@ public:
     Sandbox()
     {
         PushLayer(new ExampleLayer());
-        PushOverlay(new Engine::ImGuiLayer());
+        // PushOverlay(new Engine::ImGuiLayer());
     }
 
     ~Sandbox()
