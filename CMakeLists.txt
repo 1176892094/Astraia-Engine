@@ -26,7 +26,11 @@ add_library(source SHARED
         Plugins/imgui/imgui_widgets.cpp
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
-        Plugins/imgui/backends/imgui_impl_opengl3.cpp)
+        Plugins/imgui/backends/imgui_impl_opengl3.cpp
+        Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
+        Runtime/Platform/OpenGL/OpenGLVertexArray.h
+        Runtime/Source/Renderer/VertexArray.cpp
+        Runtime/Source/Renderer/VertexArray.h)
 
 
 target_include_directories(source PUBLIC
