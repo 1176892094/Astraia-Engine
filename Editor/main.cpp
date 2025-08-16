@@ -3,8 +3,7 @@
 class ExampleLayer : public Engine::Layer
 {
 public:
-    ExampleLayer()
-        : Layer("Example")
+    ExampleLayer(): Layer("Example")
     {
     }
 
