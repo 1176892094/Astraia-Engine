@@ -1,12 +1,10 @@
 #pragma once
-#include "Shader.h"
+
 #include "Window.h"
 #include "Source/Core/LayerStack.h"
 #include "Source/Events/Event.h"
 #include "Source/Events/ApplicationEvent.h"
 #include "Source/GUI/ImGuiLayer.h"
-#include "Source/Renderer/OrthographicCamera.h"
-#include "Source/Renderer/VertexArray.h"
 
 namespace Engine
 {
@@ -34,14 +32,7 @@ namespace Engine
         ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
-
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
-
-        OrthographicCamera m_Camera;
+        float m_LastFrameTime = 0.0f;
 
         static Application* s_Instance;
     };

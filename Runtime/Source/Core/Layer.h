@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Source/Core/Timestep.h"
 #include "Source/Events/Event.h"
 
 namespace Engine
@@ -19,7 +20,7 @@ namespace Engine
         {
         }
 
-        virtual void OnUpdate()
+        virtual void OnUpdate(Timestep ts)
         {
         }
 
