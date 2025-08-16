@@ -13,12 +13,18 @@ add_library(source SHARED
         Runtime/Source/GUI/ImGuiLayer.cpp
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Platform/MacOS/MacInput.cpp
+
         Runtime/Source/Renderer/Renderer.cpp
         Runtime/Source/Renderer/Buffer.cpp
         Runtime/Source/Renderer/VertexArray.cpp
+        Runtime/Source/Renderer/RendererAPI.cpp
+        Runtime/Source/Renderer/RenderCommand.cpp
+        Runtime/Source/Renderer/OrthographicCamera.cpp
+
         Runtime/Platform/OpenGL/OpenGLContext.cpp
         Runtime/Platform/OpenGL/OpenGLBuffer.cpp
         Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
+        Runtime/Platform/OpenGL/OpenGLRendererAPI.cpp
 
         Plugins/glad/src/glad.c
 
@@ -29,12 +35,6 @@ add_library(source SHARED
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-        Runtime/Platform/OpenGL/OpenGLRendererAPI.cpp
-        Runtime/Platform/OpenGL/OpenGLRendererAPI.h
-        Runtime/Source/Renderer/RendererAPI.cpp
-        Runtime/Source/Renderer/RendererAPI.h
-        Runtime/Source/Renderer/RenderCommand.cpp
-        Runtime/Source/Renderer/RenderCommand.h
 )
 
 

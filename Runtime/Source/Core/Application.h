@@ -5,6 +5,7 @@
 #include "Source/Events/Event.h"
 #include "Source/Events/ApplicationEvent.h"
 #include "Source/GUI/ImGuiLayer.h"
+#include "Source/Renderer/OrthographicCamera.h"
 #include "Source/Renderer/VertexArray.h"
 
 namespace Engine
@@ -39,6 +40,8 @@ namespace Engine
 
         std::shared_ptr<Shader> m_BlueShader;
         std::shared_ptr<VertexArray> m_SquareVA;
+
+        OrthographicCamera m_Camera;
 
         static Application* s_Instance;
     };
