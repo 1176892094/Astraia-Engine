@@ -15,7 +15,18 @@ add_library(Basic SHARED
         Runtime/Basic/IMGUI/ImGuiLayer.cpp
 
         Runtime/Basic/Platform/Windows/MacWindow.cpp
-        Runtime/Basic/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
+
+
+        ThirdParty/glad/src/glad.c
+
+        ThirdParty/imgui/imgui.cpp
+        ThirdParty/imgui/imgui_draw.cpp
+        ThirdParty/imgui/imgui_tables.cpp
+        ThirdParty/imgui/imgui_widgets.cpp
+        ThirdParty/imgui/imgui_demo.cpp
+
+        ThirdParty/imgui/backends/imgui_impl_glfw.cpp
+        ThirdParty/imgui/backends/imgui_impl_opengl3.cpp
 )
 
 target_include_directories(Basic PUBLIC
@@ -26,7 +37,6 @@ target_include_directories(Basic PUBLIC
         ${PROJECT_SOURCE_DIR}/ThirdParty/glfw/include
         ${PROJECT_SOURCE_DIR}/ThirdParty/glad/include)
 
-target_sources(Basic PRIVATE ${PROJECT_SOURCE_DIR}/ThirdParty/glad/src/glad.c)
 
 target_link_libraries(Basic PUBLIC
         ${CMAKE_SOURCE_DIR}/ThirdParty/glfw/lib-arm64/libglfw3.a  # 或 dylib
