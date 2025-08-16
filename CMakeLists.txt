@@ -11,5 +11,7 @@ target_include_directories(source PUBLIC
         Runtime
         ${PROJECT_SOURCE_DIR}/Plugins/spdlog/include)
 
-add_executable(Astraia Editor/main.cpp)
+add_executable(Astraia Editor/main.cpp
+        Runtime/Header.cpp
+        Runtime/Header.h)
 target_link_libraries(Astraia PRIVATE source)

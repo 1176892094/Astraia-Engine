@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Event.h"
-
-#include <sstream>
-
 #include "Source/Core/KeyCodes.h"
 
 namespace Engine

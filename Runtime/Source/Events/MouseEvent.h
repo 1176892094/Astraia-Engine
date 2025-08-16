@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Event.h"
-
-#include <sstream>
-
 #include "Source/Core/MouseCodes.h"
 
 namespace Engine

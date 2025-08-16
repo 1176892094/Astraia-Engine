@@ -1,4 +1,5 @@
 #pragma once
+#include "Header.h"
 #include "Application.h"
 #include "Source/Events/ApplicationEvent.h"
 #include "Log.h"
