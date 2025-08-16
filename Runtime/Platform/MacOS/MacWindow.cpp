@@ -1,9 +1,9 @@
 #include "Header.h"
-#include "MacWindow.h"
-
+#include <glad/glad.h>
 #include "Source/Events/ApplicationEvent.h"
 #include "Source/Events/MouseEvent.h"
 #include "Source/Events/KeyEvent.h"
+#include "MacWindow.h"
 
 namespace Engine
 {
@@ -39,15 +39,22 @@ namespace Engine
 
         if (!s_GLFWInitialized)
         {
-            // TODO: glfwTerminate on system shutdown
             int success = glfwInit();
             HZ_CORE_ASSERT(success, "Could not intialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
         }
 
+        // ⚠️ 必须在 glfwCreateWindow 之前设置
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // macOS 必须
+
         m_Window = glfwCreateWindow((int) props.Width, (int) props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        HZ_CORE_ASSERT(status, "Failed to initialize Glad!");
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 

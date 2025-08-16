@@ -7,5 +7,7 @@
 
 #include "Source/Core/Log.h"
 
+#include "Source/GUI/ImGuiLayer.h"
+
 #include "Source/Core/Layer.h"
 // -----------------------------------
