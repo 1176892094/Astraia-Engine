@@ -2,18 +2,17 @@
 
 #include "Core.h"
 
-namespace Hazel {
-
+namespace Engine
+{
     class Application
     {
     public:
         Application();
+
         virtual ~Application();
 
         void Run();
     };
 
-
-    Application* CreateApplication();
-
+    Application *CreateApplication();
 }

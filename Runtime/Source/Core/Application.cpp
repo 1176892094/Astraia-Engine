@@ -1,11 +1,10 @@
 #include "Application.h"
 
-namespace Hazel {
-
+namespace Engine
+{
     Application::Application()
     {
     }
-
 
     Application::~Application()
     {
@@ -15,5 +14,4 @@ namespace Hazel {
     {
         while (true);
     }
-
 }

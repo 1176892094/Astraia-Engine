@@ -1,21 +1,18 @@
-#include <Hazel.h>
+#include "Engine.h"
 
-class Sandbox : public Hazel::Application
+class Sandbox : public Engine::Application
 {
 public:
     Sandbox()
     {
-
     }
 
     ~Sandbox()
     {
-
     }
-
 };
 
-Hazel::Application* Hazel::CreateApplication()
+Engine::Application *Engine::CreateApplication()
 {
     return new Sandbox();
 }
