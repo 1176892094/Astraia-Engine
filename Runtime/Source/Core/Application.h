@@ -14,7 +14,7 @@ namespace Engine
     public:
         Application();
 
-        virtual ~Application();
+        virtual ~Application() = default;
 
         void OnEvent(Event& e);
 
