@@ -7,7 +7,9 @@ add_library(source SHARED
         Runtime/Header.cpp
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Source/Core/Application.cpp
-        Runtime/Source/Core/Log.cpp)
+        Runtime/Source/Core/Log.cpp
+        Runtime/Source/Core/Layer.cpp
+        Runtime/Source/Core/LayerStack.cpp)
 
 target_include_directories(source PUBLIC
         Runtime
