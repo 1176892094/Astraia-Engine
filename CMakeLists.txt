@@ -3,9 +3,9 @@ project(Astraia)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(source SHARED Runtime/Source/Core/Application.cpp
-        Runtime/Source/Core/Log.cpp
-        Runtime/Source/Core/Log.h)
+add_library(source SHARED
+        Runtime/Source/Core/Application.cpp
+        Runtime/Source/Core/Log.cpp)
 
 target_include_directories(source PUBLIC
         Runtime
