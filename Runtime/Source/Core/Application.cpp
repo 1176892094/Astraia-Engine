@@ -40,6 +40,7 @@ namespace Engine
     {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
@@ -55,13 +56,16 @@ namespace Engine
     {
         while (m_Running)
         {
-            float time = (float)glfwGetTime();
+            float time = (float) glfwGetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
-            for (Layer *layer: m_LayerStack)
+            if (!m_Minimized)
             {
-                layer->OnUpdate(timestep);
+                for (Layer *layer: m_LayerStack)
+                {
+                    layer->OnUpdate(timestep);
+                }
             }
 
             m_ImGuiLayer->Begin();
@@ -79,5 +83,19 @@ namespace Engine
     {
         m_Running = false;
         return true;
+    }
+
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        {
+            m_Minimized = true;
+            return false;
+        }
+
+        m_Minimized = false;
+        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+        return false;
     }
 }
