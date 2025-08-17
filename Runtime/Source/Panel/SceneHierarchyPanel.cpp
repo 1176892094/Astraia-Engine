@@ -19,7 +19,7 @@ namespace Engine
 
     void SceneHierarchyPanel::OnImGuiRender()
     {
-        ImGui::Begin("Hierarchy");
+        ImGui::Begin("Scene Hierarchy");
 
         m_Context->m_Registry.each([&](auto entityID)
         {
@@ -30,13 +30,81 @@ namespace Engine
         if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
             m_SelectionContext = {};
 
+        // Right-click on blank space
+        if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight))
+        {
+            if (ImGui::MenuItem("Create Empty Entity"))
+                m_Context->CreateEntity("Empty Entity");
+
+            ImGui::EndPopup();
+        }
+
         ImGui::End();
 
         ImGui::Begin("Properties");
         if (m_SelectionContext)
+        {
             DrawComponents(m_SelectionContext);
 
+            if (ImGui::Button("Add Component"))
+                ImGui::OpenPopup("AddComponent");
+
+            if (ImGui::BeginPopup("AddComponent"))
+            {
+                if (ImGui::MenuItem("Camera"))
+                {
+                    m_SelectionContext.AddComponent<CameraComponent>();
+                    ImGui::CloseCurrentPopup();
+                }
+
+                if (ImGui::MenuItem("Sprite Renderer"))
+                {
+                    m_SelectionContext.AddComponent<SpriteRendererComponent>();
+                    ImGui::CloseCurrentPopup();
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
         ImGui::End();
+    }
+
+    void SceneHierarchyPanel::DrawEntityNode(Entity entity)
+    {
+        auto &tag = entity.GetComponent<TagComponent>().Tag;
+
+        ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+        bool opened = ImGui::TreeNodeEx((void *) (uint64_t) (uint32_t) entity, flags, tag.c_str());
+        if (ImGui::IsItemClicked())
+        {
+            m_SelectionContext = entity;
+        }
+
+        bool entityDeleted = false;
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::MenuItem("Delete Entity"))
+                entityDeleted = true;
+
+            ImGui::EndPopup();
+        }
+
+        if (opened)
+        {
+            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+            bool opened = ImGui::TreeNodeEx((void *) 9817239, flags, tag.c_str());
+            if (opened)
+                ImGui::TreePop();
+            ImGui::TreePop();
+        }
+
+        if (entityDeleted)
+        {
+            m_Context->DestroyEntity(entity);
+            if (m_SelectionContext == entity)
+                m_SelectionContext = {};
+        }
     }
 
     static void DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue = 0.0f, float columnWidth = 100.0f)
@@ -96,6 +164,7 @@ namespace Engine
         ImGui::PopID();
     }
 
+
     void SceneHierarchyPanel::DrawComponents(Entity entity)
     {
         if (entity.HasComponent<TagComponent>())
@@ -111,9 +180,13 @@ namespace Engine
             }
         }
 
+        const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+
         if (entity.HasComponent<TransformComponent>())
         {
-            if (ImGui::TreeNodeEx((void *) typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+            bool open = ImGui::TreeNodeEx((void *) typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
+
+            if (open)
             {
                 auto &tc = entity.GetComponent<TransformComponent>();
                 DrawVec3Control("Translation", tc.Translation);
@@ -128,7 +201,7 @@ namespace Engine
 
         if (entity.HasComponent<CameraComponent>())
         {
-            if (ImGui::TreeNodeEx((void *) typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+            if (ImGui::TreeNodeEx((void *) typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera"))
             {
                 auto &cameraComponent = entity.GetComponent<CameraComponent>();
                 auto &camera = cameraComponent.Camera;
@@ -191,28 +264,36 @@ namespace Engine
                 ImGui::TreePop();
             }
         }
-    }
 
-    void SceneHierarchyPanel::DrawEntityNode(Entity entity)
-    {
-        auto &tag = entity.GetComponent<TagComponent>().Tag;
-
-        ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
-        bool opened = ImGui::TreeNodeEx((void *) (uint64_t) (uint32_t) entity, flags, tag.c_str());
-        if (ImGui::IsItemClicked())
+        if (entity.HasComponent<SpriteRendererComponent>())
         {
-            m_SelectionContext = entity;
-        }
-
-        if (opened)
-        {
-            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-            bool opened = ImGui::TreeNodeEx((void *) 9817239, flags, tag.c_str());
-            if (opened)
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
+            bool open = ImGui::TreeNodeEx((void *) typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer");
+            ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+            if (ImGui::Button("+", ImVec2{20, 20}))
             {
+                ImGui::OpenPopup("ComponentSettings");
+            }
+            ImGui::PopStyleVar();
+
+            bool removeComponent = false;
+            if (ImGui::BeginPopup("ComponentSettings"))
+            {
+                if (ImGui::MenuItem("Remove component"))
+                    removeComponent = true;
+
+                ImGui::EndPopup();
+            }
+
+            if (open)
+            {
+                auto &src = entity.GetComponent<SpriteRendererComponent>();
+                ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
                 ImGui::TreePop();
             }
-            ImGui::TreePop();
+
+            if (removeComponent)
+                entity.RemoveComponent<SpriteRendererComponent>();
         }
     }
 }
