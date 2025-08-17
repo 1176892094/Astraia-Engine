@@ -3,18 +3,21 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Source/Core/Core.h"
+#include "Source/Debug/Instrumentor.h"
 
-namespace Engine {
-
-    OpenGLContext::OpenGLContext(GLFWwindow* windowHandle): m_WindowHandle(windowHandle)
+namespace Engine
+{
+    OpenGLContext::OpenGLContext(GLFWwindow *windowHandle) : m_WindowHandle(windowHandle)
     {
         HZ_CORE_ASSERT(windowHandle, "Window handle is null!");
     }
 
     void OpenGLContext::Init()
     {
+        HZ_PROFILE_FUNCTION();
+
         glfwMakeContextCurrent(m_WindowHandle);
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         HZ_CORE_ASSERT(status, "Failed to initialize Glad!");
 
         HZ_CORE_INFO("OpenGL Info:");
@@ -25,7 +28,8 @@ namespace Engine {
 
     void OpenGLContext::SwapBuffers()
     {
+        HZ_PROFILE_FUNCTION();
+
         glfwSwapBuffers(m_WindowHandle);
     }
-
 }

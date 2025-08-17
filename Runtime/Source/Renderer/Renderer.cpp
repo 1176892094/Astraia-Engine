@@ -2,6 +2,7 @@
 
 #include "Renderer2D.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Source/Debug/Instrumentor.h"
 
 namespace Engine
 {
@@ -9,6 +10,8 @@ namespace Engine
 
     void Renderer::Init()
     {
+        HZ_PROFILE_FUNCTION();
+
         RenderCommand::Init();
         Renderer2D::Init();
     }
