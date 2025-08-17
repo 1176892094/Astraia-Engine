@@ -97,7 +97,6 @@ void Sandbox2D::OnImGuiRender()
 	static bool dockingEnabled = true;
 	if (dockingEnabled)
 	{
-		ImGui::ShowDemoWindow(&dockingEnabled);
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
 		bool opt_fullscreen = opt_fullscreen_persistant;

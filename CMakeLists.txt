@@ -49,7 +49,6 @@ add_library(source SHARED
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-
 )
 
 target_include_directories(source PUBLIC
@@ -68,5 +67,5 @@ target_link_libraries(source PUBLIC
         "-framework IOKit"
         "-framework CoreVideo")
 
-add_executable(Astraia Editor/Sandbox.cpp)
+add_executable(Astraia Editor/Source/Sandbox/Sandbox.cpp)
 target_link_libraries(Astraia PRIVATE source)
