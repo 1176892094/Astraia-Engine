@@ -26,3 +26,7 @@
 #include "Source/Renderer/VertexArray.h"
 #include "Source/Renderer/OrthographicCamera.h"
 // -----------------------------------
+
+#include "Source/Scene/Scene.h"
+#include "Source/Scene/Entity.h"
+#include "Source/Scene/Components.h"

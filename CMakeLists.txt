@@ -38,6 +38,7 @@ add_library(source SHARED
         Runtime/Platform/OpenGL/OpenGLFrameBuffer.cpp
 
         Runtime/Source/Scene/Scene.cpp
+        Runtime/Source/Scene/Entity.cpp
 
 
         Plugins/glad/src/glad.c
@@ -73,6 +74,7 @@ add_executable(Astraia
         Editor/main.cpp
         Editor/Source/Sandbox/ExampleLayer.cpp
         Editor/Source/Sandbox/Sandbox2D.cpp
-        Editor/Source/Core/EditorLayer.cpp)
+        Editor/Source/Core/EditorLayer.cpp
+)
 
 target_link_libraries(Astraia PRIVATE source)
