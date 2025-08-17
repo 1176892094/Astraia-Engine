@@ -36,7 +36,8 @@ namespace Engine
         m_Name = filepath.substr(lastSlash, count);
     }
 
-    OpenGLShader::OpenGLShader(const std::string &name, const std::string &vertexSrc, const std::string &fragmentSrc) : m_Name(name)
+    OpenGLShader::OpenGLShader(const std::string &name, const std::string &vertexSrc, const std::string &fragmentSrc)
+        : m_Name(name)
     {
         HZ_PROFILE_FUNCTION();
 
@@ -103,7 +104,8 @@ namespace Engine
             size_t nextLinePos = source.find_first_not_of("\r\n", eol);
             HZ_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
             pos = source.find(typeToken, nextLinePos);
-            shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+
+            shaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
         }
 
         return shaderSources;
@@ -114,11 +116,9 @@ namespace Engine
         HZ_PROFILE_FUNCTION();
 
         GLuint program = glCreateProgram();
-
         HZ_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
         std::array<GLenum, 2> glShaderIDs;
         int glShaderIDIndex = 0;
-
         for (auto &kv: shaderSources)
         {
             GLenum type = kv.first;
@@ -208,8 +208,6 @@ namespace Engine
 
     void OpenGLShader::SetIntArray(const std::string &name, int *values, uint32_t count)
     {
-        HZ_PROFILE_FUNCTION();
-
         UploadUniformIntArray(name, values, count);
     }
 
