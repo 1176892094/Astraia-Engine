@@ -67,5 +67,11 @@ target_link_libraries(source PUBLIC
         "-framework IOKit"
         "-framework CoreVideo")
 
-add_executable(Astraia Editor/Source/Sandbox/Sandbox.cpp)
+add_executable(Astraia Editor/Source/main.cpp)
+
+target_sources(Astraia PRIVATE
+        Editor/Source/Sandbox/Sandbox2D.cpp
+        Editor/Source/Sandbox/ExampleLayer.cpp
+)
+
 target_link_libraries(Astraia PRIVATE source)

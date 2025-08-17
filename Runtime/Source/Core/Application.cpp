@@ -5,12 +5,13 @@
 #include "glfw/glfw3.h"
 #include "Source/Renderer/Renderer.h"
 
+extern Engine::Application *Engine::CreateApplication();
 
 namespace Engine
 {
     Application *Application::s_Instance = nullptr;
 
-    Application::Application(const std::string& name)
+    Application::Application(const std::string &name)
     {
         HZ_PROFILE_FUNCTION();
 
