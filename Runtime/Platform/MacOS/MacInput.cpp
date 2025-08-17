@@ -5,23 +5,23 @@
 
 namespace Engine
 {
-    Input *Input::s_Instance = new WindowsInput();
+    Scope<Input> Input::s_Instance = CreateScope<MacInput>();
 
-    bool WindowsInput::IsKeyPressedImpl(int keycode)
+    bool MacInput::IsKeyPressedImpl(int keycode)
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
         auto state = glfwGetKey(window, keycode);
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool WindowsInput::IsMouseButtonPressedImpl(int button)
+    bool MacInput::IsMouseButtonPressedImpl(int button)
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
         auto state = glfwGetMouseButton(window, button);
         return state == GLFW_PRESS;
     }
 
-    std::pair<float, float> WindowsInput::GetMousePositionImpl()
+    std::pair<float, float> MacInput::GetMousePositionImpl()
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
         double xpos, ypos;
@@ -30,13 +30,13 @@ namespace Engine
         return {(float) xpos, (float) ypos};
     }
 
-    float WindowsInput::GetMouseXImpl()
+    float MacInput::GetMouseXImpl()
     {
         auto [x, y] = GetMousePositionImpl();
         return x;
     }
 
-    float WindowsInput::GetMouseYImpl()
+    float MacInput::GetMouseYImpl()
     {
         auto [x, y] = GetMousePositionImpl();
         return y;

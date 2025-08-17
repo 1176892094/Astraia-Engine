@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Source/Core/Core.h"
 #include "Source/Core/Input.h"
 
 namespace Engine
 {
-    class WindowsInput : public Input
+    class MacInput : public Input
     {
     protected:
         virtual bool IsKeyPressedImpl(int keycode) override;
