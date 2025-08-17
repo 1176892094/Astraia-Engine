@@ -16,7 +16,7 @@ namespace Engine
     class Sandbox : public Application
     {
     public:
-        Sandbox() : Application("Editor")
+        Sandbox() : Application("Astraia Engine")
         {
             //PushLayer(new Sandbox2D());
             PushLayer(new EditorLayer());
