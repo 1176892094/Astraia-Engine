@@ -46,12 +46,12 @@ namespace Engine
             uint32_t DrawCalls = 0;
             uint32_t QuadCount = 0;
 
-            uint32_t GetTotalVertexCount()
+            uint32_t GetTotalVertexCount() const
             {
                 return QuadCount * 4;
             }
 
-            uint32_t GetTotalIndexCount()
+            uint32_t GetTotalIndexCount() const
             {
                 return QuadCount * 6;
             }
@@ -62,6 +62,8 @@ namespace Engine
         static Statistics GetStats();
 
     private:
-        static void FlushAndReset();
+        static void StartBatch();
+
+        static void NextBatch();
     };
 }
