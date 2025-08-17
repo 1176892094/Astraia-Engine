@@ -8,6 +8,12 @@ namespace Engine
     class Input
     {
     public:
+        virtual ~Input() = default;
+
+        Input(const Input&) = delete;
+
+        Input& operator=(const Input&) = delete;
+
         static bool IsKeyPressed(int keycode)
         {
             return s_Instance->IsKeyPressedImpl(keycode);
@@ -36,6 +42,8 @@ namespace Engine
         static Scope<Input> Create();
 
     protected:
+        Input() = default;
+
         virtual bool IsKeyPressedImpl(int keycode) = 0;
 
         virtual bool IsMouseButtonPressedImpl(int button) = 0;
