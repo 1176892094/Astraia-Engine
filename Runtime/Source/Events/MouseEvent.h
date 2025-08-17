@@ -61,8 +61,7 @@ namespace Engine
         EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 
     protected:
-        MouseButtonEvent(const MouseCode button)
-            : m_Button(button)
+        MouseButtonEvent(const MouseCode button): m_Button(button)
         {
         }
 

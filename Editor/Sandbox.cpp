@@ -10,7 +10,7 @@ class ExampleLayer : public Engine::Layer
 public:
     ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f)
     {
-    	m_VertexArray = Engine::VertexArray::Create();
+        m_VertexArray = Engine::VertexArray::Create();
 
         float vertices[3 * 7] = {
             -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -32,7 +32,7 @@ public:
         indexBuffer.reset(Engine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-    	 m_SquareVA = Engine::VertexArray::Create();
+        m_SquareVA = Engine::VertexArray::Create();
 
         float squareVertices[5 * 4] = {
             -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -199,7 +199,7 @@ public:
     Sandbox()
     {
         PushLayer(new ExampleLayer());
-    	PushLayer(new Sandbox2D());
+        PushLayer(new Sandbox2D());
     }
 
     ~Sandbox()
@@ -213,12 +213,13 @@ Engine::Application *Engine::CreateApplication()
 }
 
 
-Sandbox2D::Sandbox2D(): Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
 {
 }
 
 void Sandbox2D::OnAttach()
 {
+    m_CheckerboardTexture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -227,26 +228,28 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Engine::Timestep ts)
 {
-	// Update
-	m_CameraController.OnUpdate(ts);
+    // Update
+    m_CameraController.OnUpdate(ts);
 
-	// Render
-	Engine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-	Engine::RenderCommand::Clear();
+    // Render
+    Engine::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+    Engine::RenderCommand::Clear();
 
-	Engine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Engine::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	Engine::Renderer2D::EndScene();
+    Engine::Renderer2D::BeginScene(m_CameraController.GetCamera());
+    Engine::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
+    Engine::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
+    Engine::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f, 10.0f}, m_CheckerboardTexture);
+    Engine::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
 {
-	ImGui::Begin("Settings");
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	ImGui::End();
+    ImGui::Begin("Settings");
+    ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+    ImGui::End();
 }
 
-void Sandbox2D::OnEvent(Engine::Event& e)
+void Sandbox2D::OnEvent(Engine::Event &e)
 {
-	m_CameraController.OnEvent(e);
+    m_CameraController.OnEvent(e);
 }
