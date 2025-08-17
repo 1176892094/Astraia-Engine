@@ -13,7 +13,7 @@ namespace Engine
     class Application
     {
     public:
-        Application(const std::string& name = "Hazel App");
+        Application(const std::string &name = "Hazel App");
 
         virtual ~Application();
 
@@ -29,6 +29,11 @@ namespace Engine
         }
 
         void Close();
+
+        ImGuiLayer *GetImGuiLayer()
+        {
+            return m_ImGuiLayer;
+        }
 
         static Application &Get()
         {

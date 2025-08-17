@@ -9,7 +9,6 @@ add_library(source SHARED
         Runtime/Source/Core/Application.cpp
         Runtime/Source/Core/Log.cpp
         Runtime/Source/Core/Layer.cpp
-        Runtime/Source/Core/Input.cpp
         Runtime/Source/Core/Window.cpp
         Runtime/Source/Core/LayerStack.cpp
         Runtime/Source/Core/OrthographicCameraController.cpp

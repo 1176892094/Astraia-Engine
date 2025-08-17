@@ -1,25 +1,25 @@
 #include "Header.h"
-#include "MacInput.h"
+#include "Source/Core/Input.h"
 #include "Source/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace Engine
 {
-    bool MacInput::IsKeyPressedImpl(int keycode)
+    bool Input::IsKeyPressed(KeyCode key)
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
-        auto state = glfwGetKey(window, keycode);
+        auto state = glfwGetKey(window, key);
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool MacInput::IsMouseButtonPressedImpl(int button)
+    bool Input::IsMouseButtonPressed(MouseCode button)
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
         auto state = glfwGetMouseButton(window, button);
         return state == GLFW_PRESS;
     }
 
-    std::pair<float, float> MacInput::GetMousePositionImpl()
+    std::pair<float, float> Input::GetMousePosition()
     {
         auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());
         double xpos, ypos;
@@ -28,15 +28,15 @@ namespace Engine
         return {(float) xpos, (float) ypos};
     }
 
-    float MacInput::GetMouseXImpl()
+    float Input::GetMouseX()
     {
-        auto [x, y] = GetMousePositionImpl();
+        auto [x, y] = GetMousePosition();
         return x;
     }
 
-    float MacInput::GetMouseYImpl()
+    float Input::GetMouseY()
     {
-        auto [x, y] = GetMousePositionImpl();
+        auto [x, y] = GetMousePosition();
         return y;
     }
 }
