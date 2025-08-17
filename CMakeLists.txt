@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 4.0)
 project(Astraia)
 
 set(CMAKE_CXX_STANDARD 20)
+set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(source SHARED
         Runtime/Header.cpp

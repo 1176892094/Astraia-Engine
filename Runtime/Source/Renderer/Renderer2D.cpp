@@ -46,7 +46,7 @@ namespace Engine
         uint32_t whiteTextureData = 0xFFFFFFFF;
         s_Data->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-        s_Data->TextureShader = Shader::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Shaders/Texture.glsl");
+        s_Data->TextureShader = Shader::Create("Resource/Shaders/Texture.glsl");
         s_Data->TextureShader->Bind();
         s_Data->TextureShader->SetInt("u_Texture", 0);
     }

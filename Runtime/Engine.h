@@ -15,6 +15,7 @@
 // -----------------------------------
 
 #include "Source/GUI/ImGuiLayer.h"
+#include "Source/Debug/Instrumentor.h"
 
 // ---Renderer------------------------
 #include "Source/Renderer/Texture.h"

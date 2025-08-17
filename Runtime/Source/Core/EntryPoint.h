@@ -1,17 +1,23 @@
 #pragma once
 #include "Application.h"
 #include "Log.h"
+#include "Source/Debug/Instrumentor.h"
 
 extern Engine::Application *Engine::CreateApplication();
 
 int main(int argc, char **argv)
 {
     Engine::Log::Init();
-    HZ_CORE_WARN("Initialized Log!");
-    int a = 5;
-    HZ_INFO("Hello! Var={0}", a);
 
+    HZ_PROFILE_BEGIN_SESSION("Startup", "Profile-Startup.json");
     auto app = Engine::CreateApplication();
+    HZ_PROFILE_END_SESSION();
+
+    HZ_PROFILE_BEGIN_SESSION("Runtime", "Profile-Runtime.json");
     app->Run();
+    HZ_PROFILE_END_SESSION();
+
+    HZ_PROFILE_BEGIN_SESSION("Startup", "Profile-Destroy.json");
     delete app;
+    HZ_PROFILE_END_SESSION();
 }

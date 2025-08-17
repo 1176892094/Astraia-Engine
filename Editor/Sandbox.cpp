@@ -4,6 +4,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include <chrono>
 
 class ExampleLayer : public Engine::Layer
 {
@@ -18,7 +19,7 @@ public:
             0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
         };
 
-    	Engine::Ref<Engine::VertexBuffer> vertexBuffer = Engine::VertexBuffer::Create(vertices, sizeof(vertices));
+        Engine::Ref<Engine::VertexBuffer> vertexBuffer = Engine::VertexBuffer::Create(vertices, sizeof(vertices));
         Engine::BufferLayout layout = {
             {Engine::ShaderDataType::Float3, "a_Position"},
             {Engine::ShaderDataType::Float4, "a_Color"}
@@ -27,7 +28,7 @@ public:
         m_VertexArray->AddVertexBuffer(vertexBuffer);
 
         uint32_t indices[3] = {0, 1, 2};
-    	Engine::Ref<Engine::IndexBuffer> indexBuffer = Engine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+        Engine::Ref<Engine::IndexBuffer> indexBuffer = Engine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
         m_SquareVA = Engine::VertexArray::Create();
@@ -39,7 +40,7 @@ public:
             -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
         };
 
-    	Engine::Ref<Engine::VertexBuffer> squareVB = Engine::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+        Engine::Ref<Engine::VertexBuffer> squareVB = Engine::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
         squareVB->SetLayout({
             {Engine::ShaderDataType::Float3, "a_Position"},
             {Engine::ShaderDataType::Float2, "a_TexCoord"}
@@ -47,7 +48,7 @@ public:
         m_SquareVA->AddVertexBuffer(squareVB);
 
         uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
-    	Engine::Ref<Engine::IndexBuffer> squareIB = Engine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+        Engine::Ref<Engine::IndexBuffer> squareIB = Engine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
         m_SquareVA->SetIndexBuffer(squareIB);
 
         std::string vertexSrc = R"(
@@ -121,13 +122,13 @@ public:
 
         m_FlatColorShader = Engine::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
-        auto textureShader = m_ShaderLibrary.Load("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Shaders/Texture.glsl");
+        auto textureShader = m_ShaderLibrary.Load("Resource/Shaders/Texture.glsl");
 
-        m_Texture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Checkerboard.png");
-        m_LogoTexture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Logo.png");
+        m_Texture = Engine::Texture2D::Create("Resource/Textures/Checkerboard.png");
+        m_LogoTexture = Engine::Texture2D::Create("Resource/Textures/Logo.png");
 
-    	textureShader->Bind();
-    	textureShader->SetInt("u_Texture", 0);
+        textureShader->Bind();
+        textureShader->SetInt("u_Texture", 0);
     }
 
     void OnUpdate(Engine::Timestep ts) override
@@ -141,8 +142,8 @@ public:
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-    	m_FlatColorShader->Bind();
-    	m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
+        m_FlatColorShader->Bind();
+        m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
 
         for (int y = 0; y < 20; y++)
         {
@@ -194,7 +195,7 @@ class Sandbox : public Engine::Application
 public:
     Sandbox()
     {
-        PushLayer(new ExampleLayer());
+        // PushLayer(new ExampleLayer());
         PushLayer(new Sandbox2D());
     }
 
@@ -208,14 +209,13 @@ Engine::Application *Engine::CreateApplication()
     return new Sandbox();
 }
 
-
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
 {
 }
 
 void Sandbox2D::OnAttach()
 {
-    m_CheckerboardTexture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Checkerboard.png");
+    m_CheckerboardTexture = Engine::Texture2D::Create("Resource/Textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -224,22 +224,30 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Engine::Timestep ts)
 {
-    // Update
-    m_CameraController.OnUpdate(ts);
-
-    // Render
-    Engine::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
-    Engine::RenderCommand::Clear();
-
-    Engine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Engine::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
-    Engine::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
-    Engine::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f, 10.0f}, m_CheckerboardTexture);
-    Engine::Renderer2D::EndScene();
+    HZ_PROFILE_FUNCTION();
+    {
+        HZ_PROFILE_SCOPE("CameraController::OnUpdate");
+        m_CameraController.OnUpdate(ts);
+    }
+    {
+        HZ_PROFILE_SCOPE("Renderer Prep");
+        Engine::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+        Engine::RenderCommand::Clear();
+    }
+    {
+        HZ_PROFILE_SCOPE("Renderer Draw");
+        Engine::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        Engine::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
+        Engine::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
+        Engine::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f, 10.0f}, m_CheckerboardTexture);
+        Engine::Renderer2D::EndScene();
+    }
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+    HZ_PROFILE_FUNCTION();
+
     ImGui::Begin("Settings");
     ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
     ImGui::End();
