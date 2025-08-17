@@ -43,6 +43,7 @@ add_library(source SHARED
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
         Runtime/Source/Renderer/Renderer2D.cpp
         Runtime/Source/Renderer/Renderer2D.h
+        Runtime/Source/Renderer/GraphicsContext.cpp
 )
 
 target_include_directories(source PUBLIC

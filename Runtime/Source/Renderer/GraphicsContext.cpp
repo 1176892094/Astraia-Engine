@@ -1,12 +1,12 @@
 #include "Header.h"
-#include "VertexArray.h"
+#include "GraphicsContext.h"
 
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Engine
 {
-    Ref<VertexArray> VertexArray::Create()
+    Scope<GraphicsContext> GraphicsContext::Create(void *window)
     {
         switch (Renderer::GetAPI())
         {
@@ -14,7 +14,7 @@ namespace Engine
                 HZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
                 return nullptr;
             case RendererAPI::API::OpenGL:
-                return CreateRef<OpenGLVertexArray>();
+                return CreateScope<OpenGLContext>(static_cast<GLFWwindow *>(window));
         }
 
         HZ_CORE_ASSERT(false, "Unknown RendererAPI!");
