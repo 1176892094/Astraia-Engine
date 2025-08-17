@@ -37,6 +37,8 @@ add_library(source SHARED
         Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
         Runtime/Platform/OpenGL/OpenGLFrameBuffer.cpp
 
+        Runtime/Source/Scene/Scene.cpp
+
 
         Plugins/glad/src/glad.c
         Plugins/stb/include/stb_image.cpp
@@ -55,6 +57,7 @@ target_include_directories(source PUBLIC
         Plugins/glm
         Plugins/imgui
         Plugins/stb/include
+        Plugins/entt/include
         Plugins/glfw/include
         Plugins/glad/include
         Plugins/spdlog/include)
@@ -70,7 +73,6 @@ add_executable(Astraia
         Editor/main.cpp
         Editor/Source/Sandbox/ExampleLayer.cpp
         Editor/Source/Sandbox/Sandbox2D.cpp
-        Editor/Source/Core/EditorLayer.cpp
-        Editor/Source/Core/EditorLayer.h)
+        Editor/Source/Core/EditorLayer.cpp)
 
 target_link_libraries(Astraia PRIVATE source)
