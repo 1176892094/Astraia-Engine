@@ -11,19 +11,22 @@ int main(int argc, char **argv)
     delete app;
 }
 
-class Sandbox : public Engine::Application
+namespace Engine
 {
-public:
-    Sandbox() : Application("Editor")
+    class Sandbox : public Application
     {
-        //PushLayer(new Engine::Sandbox2D());
-        PushLayer(new Engine::EditorLayer());
+    public:
+        Sandbox() : Application("Editor")
+        {
+            //PushLayer(new Sandbox2D());
+            PushLayer(new EditorLayer());
+        }
+
+        ~Sandbox() = default;
+    };
+
+    Application *Engine::CreateApplication()
+    {
+        return new Sandbox();
     }
-
-    ~Sandbox() = default;
-};
-
-Engine::Application *Engine::CreateApplication()
-{
-    return new Sandbox();
 }
