@@ -3,51 +3,53 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f / 720.0f)
+namespace Engine
 {
-    m_VertexArray = Engine::VertexArray::Create();
-
-    float vertices[3 * 7] =
+    ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f / 720.0f)
     {
-        -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-        0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-        0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-    };
+        m_VertexArray = VertexArray::Create();
 
-    Engine::Ref<Engine::VertexBuffer> vertexBuffer = Engine::VertexBuffer::Create(vertices, sizeof(vertices));
-    Engine::BufferLayout layout = {
-        {Engine::ShaderDataType::Float3, "a_Position"},
-        {Engine::ShaderDataType::Float4, "a_Color"}
-    };
-    vertexBuffer->SetLayout(layout);
-    m_VertexArray->AddVertexBuffer(vertexBuffer);
+        float vertices[3 * 7] =
+        {
+            -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+            0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+            0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+        };
 
-    uint32_t indices[3] = {0, 1, 2};
-    Engine::Ref<Engine::IndexBuffer> indexBuffer = Engine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
-    m_VertexArray->SetIndexBuffer(indexBuffer);
+        Ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+        BufferLayout layout = {
+            {ShaderDataType::Float3, "a_Position"},
+            {ShaderDataType::Float4, "a_Color"}
+        };
+        vertexBuffer->SetLayout(layout);
+        m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-    m_SquareVA = Engine::VertexArray::Create();
+        uint32_t indices[3] = {0, 1, 2};
+        Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+        m_VertexArray->SetIndexBuffer(indexBuffer);
 
-    float squareVertices[5 * 4] =
-    {
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
-    };
+        m_SquareVA = VertexArray::Create();
 
-    Engine::Ref<Engine::VertexBuffer> squareVB = Engine::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-    squareVB->SetLayout({
-        {Engine::ShaderDataType::Float3, "a_Position"},
-        {Engine::ShaderDataType::Float2, "a_TexCoord"}
-    });
-    m_SquareVA->AddVertexBuffer(squareVB);
+        float squareVertices[5 * 4] =
+        {
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+        };
 
-    uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
-    Engine::Ref<Engine::IndexBuffer> squareIB = Engine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-    m_SquareVA->SetIndexBuffer(squareIB);
+        Ref<VertexBuffer> squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+        squareVB->SetLayout({
+            {ShaderDataType::Float3, "a_Position"},
+            {ShaderDataType::Float2, "a_TexCoord"}
+        });
+        m_SquareVA->AddVertexBuffer(squareVB);
 
-    std::string vertexSrc = R"(
+        uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
+        Ref<IndexBuffer> squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+        m_SquareVA->SetIndexBuffer(squareIB);
+
+        std::string vertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -67,7 +69,7 @@ ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f
 			}
 		)";
 
-    std::string fragmentSrc = R"(
+        std::string fragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
@@ -82,9 +84,9 @@ ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f
 			}
 		)";
 
-    m_Shader = Engine::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
+        m_Shader = Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
-    std::string flatColorShaderVertexSrc = R"(
+        std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -101,7 +103,7 @@ ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f
 			}
 		)";
 
-    std::string flatColorShaderFragmentSrc = R"(
+        std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
@@ -116,72 +118,73 @@ ExampleLayer::ExampleLayer() : Layer("ExampleLayer"), m_CameraController(1280.0f
 			}
 		)";
 
-    m_FlatColorShader = Engine::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+        m_FlatColorShader = Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
-    auto textureShader = m_ShaderLibrary.Load("Resource/Shaders/Texture.glsl");
+        auto textureShader = m_ShaderLibrary.Load("Resource/Shaders/Texture.glsl");
 
-    m_Texture = Engine::Texture2D::Create("Resource/Textures/Checkerboard.png");
-    m_ChernoLogoTexture = Engine::Texture2D::Create("Resource/Textures/Logo.png");
+        m_Texture = Texture2D::Create("Resource/Textures/Checkerboard.png");
+        m_ChernoLogoTexture = Texture2D::Create("Resource/Textures/Logo.png");
 
-    textureShader->Bind();
-    textureShader->SetInt("u_Texture", 0);
-}
-
-void ExampleLayer::OnAttach()
-{
-}
-
-void ExampleLayer::OnDetach()
-{
-}
-
-void ExampleLayer::OnUpdate(Engine::Timestep ts)
-{
-    // Update
-    m_CameraController.OnUpdate(ts);
-
-    // Render
-    Engine::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
-    Engine::RenderCommand::Clear();
-
-    Engine::Renderer::BeginScene(m_CameraController.GetCamera());
-
-    glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
-    m_FlatColorShader->Bind();
-    m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
-
-    for (int y = 0; y < 20; y++)
-    {
-        for (int x = 0; x < 20; x++)
-        {
-            glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-            Engine::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
-        }
+        textureShader->Bind();
+        textureShader->SetInt("u_Texture", 0);
     }
 
-    auto textureShader = m_ShaderLibrary.Get("Texture");
+    void ExampleLayer::OnAttach()
+    {
+    }
 
-    m_Texture->Bind();
-    Engine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-    m_ChernoLogoTexture->Bind();
-    Engine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+    void ExampleLayer::OnDetach()
+    {
+    }
 
-    // Triangle
-    // Engine::Renderer::Submit(m_Shader, m_VertexArray);
+    void ExampleLayer::OnUpdate(Timestep ts)
+    {
+        // Update
+        m_CameraController.OnUpdate(ts);
 
-    Engine::Renderer::EndScene();
-}
+        // Render
+        RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+        RenderCommand::Clear();
 
-void ExampleLayer::OnImGuiRender()
-{
-    ImGui::Begin("Settings");
-    ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
-    ImGui::End();
-}
+        Renderer::BeginScene(m_CameraController.GetCamera());
 
-void ExampleLayer::OnEvent(Engine::Event &e)
-{
-    m_CameraController.OnEvent(e);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+        m_FlatColorShader->Bind();
+        m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
+
+        for (int y = 0; y < 20; y++)
+        {
+            for (int x = 0; x < 20; x++)
+            {
+                glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
+            }
+        }
+
+        auto textureShader = m_ShaderLibrary.Get("Texture");
+
+        m_Texture->Bind();
+        Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        m_ChernoLogoTexture->Bind();
+        Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+        // Triangle
+        // Renderer::Submit(m_Shader, m_VertexArray);
+
+        Renderer::EndScene();
+    }
+
+    void ExampleLayer::OnImGuiRender()
+    {
+        ImGui::Begin("Settings");
+        ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+        ImGui::End();
+    }
+
+    void ExampleLayer::OnEvent(Event &e)
+    {
+        m_CameraController.OnEvent(e);
+    }
 }

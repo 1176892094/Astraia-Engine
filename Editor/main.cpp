@@ -1,5 +1,6 @@
 #include "Engine.h"
-#include "Sandbox/Sandbox2D.h"
+#include "Source/Core/EditorLayer.h"
+#include "Source/Sandbox/Sandbox2D.h"
 
 
 int main(int argc, char **argv)
@@ -13,14 +14,13 @@ int main(int argc, char **argv)
 class Sandbox : public Engine::Application
 {
 public:
-    Sandbox()
+    Sandbox() : Application("Editor")
     {
-        PushLayer(new Sandbox2D());
+        //PushLayer(new Engine::Sandbox2D());
+        PushLayer(new Engine::EditorLayer());
     }
 
-    ~Sandbox()
-    {
-    }
+    ~Sandbox() = default;
 };
 
 Engine::Application *Engine::CreateApplication()
