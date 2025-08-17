@@ -18,6 +18,7 @@
 #include "Source/Debug/Instrumentor.h"
 
 // ---Renderer------------------------
+#include "Source/Renderer/FrameBuffer.h"
 #include "Source/Renderer/Texture.h"
 #include "Source/Renderer/Renderer.h"
 #include "Source/Renderer/Renderer2D.h"

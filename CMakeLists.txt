@@ -22,10 +22,13 @@ add_library(source SHARED
         Runtime/Source/Renderer/Texture.cpp
         Runtime/Source/Renderer/RendererAPI.cpp
         Runtime/Source/Renderer/Renderer.cpp
+        Runtime/Source/Renderer/Renderer2D.cpp
         Runtime/Source/Renderer/Buffer.cpp
         Runtime/Source/Renderer/VertexArray.cpp
         Runtime/Source/Renderer/RenderCommand.cpp
         Runtime/Source/Renderer/OrthographicCamera.cpp
+        Runtime/Source/Renderer/GraphicsContext.cpp
+        Runtime/Source/Renderer/FrameBuffer.cpp
 
         Runtime/Platform/OpenGL/OpenGLShader.cpp
         Runtime/Platform/OpenGL/OpenGLTexture.cpp
@@ -33,6 +36,8 @@ add_library(source SHARED
         Runtime/Platform/OpenGL/OpenGLContext.cpp
         Runtime/Platform/OpenGL/OpenGLBuffer.cpp
         Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
+        Runtime/Platform/OpenGL/OpenGLFrameBuffer.cpp
+
 
         Plugins/glad/src/glad.c
         Plugins/stb/include/stb_image.cpp
@@ -44,9 +49,7 @@ add_library(source SHARED
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-        Runtime/Source/Renderer/Renderer2D.cpp
-        Runtime/Source/Renderer/Renderer2D.h
-        Runtime/Source/Renderer/GraphicsContext.cpp
+
 )
 
 target_include_directories(source PUBLIC

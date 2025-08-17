@@ -24,12 +24,13 @@ private:
 
     Engine::Ref<Engine::VertexArray> m_SquareVA;
     Engine::Ref<Engine::Shader> m_FlatColorShader;
+    Engine::Ref<Engine::Framebuffer> m_Framebuffer;
 
     Engine::Ref<Engine::Texture2D> m_CheckerboardTexture;
 
     struct ProfileResult
     {
-        const char* Name;
+        const char *Name;
         float Time;
     };
 
