@@ -11,6 +11,7 @@
 #include "Source/Renderer/Shader.h"
 #include "Source/Core/KeyCodes.h"
 #include "Source/Core/MouseCodes.h"
+#include "Source/Core/OrthographicCameraController.h"
 // -----------------------------------
 
 #include "Source/GUI/ImGuiLayer.h"

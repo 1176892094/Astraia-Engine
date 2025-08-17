@@ -9,7 +9,9 @@ add_library(source SHARED
         Runtime/Source/Core/Log.cpp
         Runtime/Source/Core/Layer.cpp
         Runtime/Source/Core/LayerStack.cpp
+        Runtime/Source/Core/OrthographicCameraController.cpp
         Runtime/Source/GUI/ImGuiLayer.cpp
+
         Runtime/Platform/MacOS/MacWindow.cpp
         Runtime/Platform/MacOS/MacInput.cpp
 
@@ -39,7 +41,6 @@ add_library(source SHARED
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-
 )
 
 target_include_directories(source PUBLIC
