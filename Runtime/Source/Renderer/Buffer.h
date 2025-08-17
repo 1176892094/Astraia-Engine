@@ -56,12 +56,10 @@ namespace Engine
         std::string Name;
         ShaderDataType Type;
         uint32_t Size;
-        uint32_t Offset;
+        size_t Offset;
         bool Normalized;
 
-        BufferElement()
-        {
-        }
+        BufferElement() = default;
 
         BufferElement(ShaderDataType type, const std::string &name, bool normalized = false) : Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
         {
@@ -103,11 +101,9 @@ namespace Engine
     class BufferLayout
     {
     public:
-        BufferLayout()
-        {
-        }
+        BufferLayout() = default;
 
-        BufferLayout(const std::initializer_list<BufferElement> &elements): m_Elements(elements)
+        BufferLayout(const std::initializer_list<BufferElement> &elements) : m_Elements(elements)
         {
             CalculateOffsetsAndStride();
         }
@@ -123,7 +119,7 @@ namespace Engine
     private:
         void CalculateOffsetsAndStride()
         {
-            uint32_t offset = 0;
+            size_t offset = 0;
             m_Stride = 0;
             for (auto &element: m_Elements)
             {
@@ -146,9 +142,9 @@ namespace Engine
 
         virtual void Unbind() const = 0;
 
-        virtual const BufferLayout& GetLayout() const = 0;
+        virtual const BufferLayout &GetLayout() const = 0;
 
-        virtual void SetLayout(const BufferLayout& layout) = 0;
+        virtual void SetLayout(const BufferLayout &layout) = 0;
 
         static VertexBuffer *Create(float *vertices, std::uint32_t size);
     };
