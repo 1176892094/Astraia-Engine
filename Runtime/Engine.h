@@ -19,6 +19,7 @@
 // ---Renderer------------------------
 #include "Source/Renderer/Texture.h"
 #include "Source/Renderer/Renderer.h"
+#include "Source/Renderer/Renderer2D.h"
 #include "Source/Renderer/RenderCommand.h"
 #include "Source/Renderer/Buffer.h"
 #include "Source/Renderer/VertexArray.h"
