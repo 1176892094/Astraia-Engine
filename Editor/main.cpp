@@ -89,7 +89,7 @@ public:
 			}
 		)";
 
-        m_Shader.reset(Engine::Shader::Create(vertexSrc, fragmentSrc));
+        m_Shader = Engine::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
         std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -123,14 +123,15 @@ public:
 			}
 		)";
 
-        m_FlatColorShader.reset(Engine::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+        m_FlatColorShader = Engine::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
-    	m_TextureShader.reset(Engine::Shader::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Shaders/Texture.glsl"));
+    	auto textureShader = m_ShaderLibrary.Load("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Shaders/Texture.glsl");
+
         m_Texture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Checkerboard.png");
-    	m_LogoTexture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Logo.png");
+        m_LogoTexture = Engine::Texture2D::Create("/Users/charlotte/Documents/GitHub/Astraia-Engine/Editor/Resource/Textures/Logo.png");
 
-        std::dynamic_pointer_cast<Engine::OpenGLShader>(m_TextureShader)->Bind();
-        std::dynamic_pointer_cast<Engine::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+    	std::dynamic_pointer_cast<Engine::OpenGLShader>(textureShader)->Bind();
+    	std::dynamic_pointer_cast<Engine::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
     }
 
     void OnUpdate(Engine::Timestep ts) override
@@ -172,11 +173,12 @@ public:
                 Engine::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
             }
         }
+    	auto textureShader = m_ShaderLibrary.Get("Texture");
 
         m_Texture->Bind();
-        Engine::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-    	m_LogoTexture->Bind();
-    	Engine::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.125f)));
+        Engine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        m_LogoTexture->Bind();
+        Engine::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.125f)));
 
         Engine::Renderer::EndScene();
     }
@@ -193,10 +195,11 @@ public:
     }
 
 private:
+    Engine::ShaderLibrary m_ShaderLibrary;
     Engine::Ref<Engine::Shader> m_Shader;
     Engine::Ref<Engine::VertexArray> m_VertexArray;
 
-    Engine::Ref<Engine::Shader> m_FlatColorShader, m_TextureShader;
+    Engine::Ref<Engine::Shader> m_FlatColorShader;
     Engine::Ref<Engine::VertexArray> m_SquareVA;
     Engine::Ref<Engine::Texture2D> m_Texture, m_LogoTexture;
 
