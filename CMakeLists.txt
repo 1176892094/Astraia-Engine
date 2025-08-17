@@ -39,7 +39,7 @@ add_library(source SHARED
 
         Runtime/Source/Scene/Scene.cpp
         Runtime/Source/Scene/Entity.cpp
-
+        Runtime/Source/Scene/SceneCamera.cpp
 
         Plugins/glad/src/glad.c
         Plugins/stb/include/stb_image.cpp

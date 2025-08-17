@@ -2,7 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Source/Renderer/Camera.h"
+#include "SceneCamera.h"
+
 
 namespace Engine
 {
@@ -50,15 +51,12 @@ namespace Engine
 
     struct CameraComponent
     {
-        Camera Camera;
-        bool Primary = true; // TODO: think about moving to Scene
+        SceneCamera Camera;
+        bool Primary = true;
+        bool FixedAspectRatio = false;
 
-        CameraComponent() = delete;
+        CameraComponent() = default;
 
         CameraComponent(const CameraComponent &) = default;
-
-        CameraComponent(const glm::mat4 &projection) : Camera(projection)
-        {
-        }
     };
 }
