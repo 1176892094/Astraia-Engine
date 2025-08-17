@@ -6,6 +6,8 @@
 #include "Source/Events/ApplicationEvent.h"
 #include "Source/GUI/ImGuiLayer.h"
 
+int main(int argc, char** argv);
+
 namespace Engine
 {
     class Application
@@ -24,8 +26,10 @@ namespace Engine
 
         inline static Application& Get() { return *s_Instance; }
 
-        void Run();
+
     private:
+        void Run();
+
         bool OnWindowClose(WindowCloseEvent& e);
 
         bool OnWindowResize(WindowResizeEvent& e);
@@ -38,6 +42,8 @@ namespace Engine
         float m_LastFrameTime = 0.0f;
 
         static Application* s_Instance;
+
+        friend int ::main(int argc, char** argv);
     };
 
     Application *CreateApplication();
