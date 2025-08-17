@@ -76,6 +76,8 @@ add_executable(Astraia
         Editor/Source/Sandbox/ExampleLayer.cpp
         Editor/Source/Sandbox/Sandbox2D.cpp
         Editor/Source/Core/EditorLayer.cpp
+        Runtime/Source/Panel/SceneHierarchyPanel.cpp
+        Runtime/Source/Panel/SceneHierarchyPanel.h
 )
 
 target_link_libraries(Astraia PRIVATE source)

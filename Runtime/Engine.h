@@ -31,3 +31,4 @@
 #include "Source/Scene/Entity.h"
 #include "Source/Scene/Components.h"
 #include "Source/Scene/ScriptableEntity.h"
+#include "Source/Panel/SceneHierarchyPanel.h"
