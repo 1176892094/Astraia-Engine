@@ -15,6 +15,7 @@
 #include <unordered_set>
 
 #include "Source/Core/Log.h"
+#include "Source/Debug/Instrumentor.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
     #include <Windows.h>

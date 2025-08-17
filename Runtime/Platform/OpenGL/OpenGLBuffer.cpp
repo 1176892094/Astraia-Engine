@@ -2,8 +2,6 @@
 #include "OpenGLBuffer.h"
 #include <glad/glad.h>
 
-#include "Source/Debug/Instrumentor.h"
-
 namespace Engine
 {
     OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)

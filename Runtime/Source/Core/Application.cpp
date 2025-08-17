@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Log.h"
 #include "glfw/glfw3.h"
-#include "Source/Debug/Instrumentor.h"
 #include "Source/Renderer/Renderer.h"
 
 

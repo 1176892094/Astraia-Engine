@@ -3,8 +3,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Source/Core/Core.h"
-#include "Source/Debug/Instrumentor.h"
-
 namespace Engine
 {
     OpenGLContext::OpenGLContext(GLFWwindow *windowHandle) : m_WindowHandle(windowHandle)

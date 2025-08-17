@@ -6,7 +6,6 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "Source/Core/Application.h"
 #include "GLFW/glfw3.h"
-#include "Source/Debug/Instrumentor.h"
 
 
 namespace Engine

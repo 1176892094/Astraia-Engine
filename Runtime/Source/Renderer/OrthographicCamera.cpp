@@ -1,7 +1,6 @@
+#include "Header.h"
 #include "OrthographicCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
-
-#include "Source/Debug/Instrumentor.h"
 
 namespace Engine
 {
