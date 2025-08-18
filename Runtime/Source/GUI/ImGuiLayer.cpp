@@ -27,8 +27,8 @@ namespace Engine
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-        io.Fonts->AddFontFromFileTTF("Resource/Fonts/Sarasa Mono SC.ttf", 18.0f);
-        io.FontDefault = io.Fonts->AddFontFromFileTTF("Resource/Fonts/Sarasa Mono SC.ttf", 18.0f);
+        io.Fonts->AddFontFromFileTTF("Resource/Fonts/Sarasa Mono SC.ttf", 14.0f);
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("Resource/Fonts/Sarasa Mono SC.ttf", 14.0f);
 
         ImGui::StyleColorsDark();
 

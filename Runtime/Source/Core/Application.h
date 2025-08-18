@@ -13,7 +13,7 @@ namespace Engine
     class Application
     {
     public:
-        Application(const std::string &name = "Hazel App");
+        Application(const std::string &name = "Astraia Engine");
 
         virtual ~Application();
 

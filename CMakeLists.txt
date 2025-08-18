@@ -4,43 +4,13 @@ project(Astraia)
 set(CMAKE_CXX_STANDARD 20)
 file(COPY ${CMAKE_SOURCE_DIR}/Editor/Resource DESTINATION ${CMAKE_BINARY_DIR})
 
-add_library(source SHARED
-        Runtime/Header.cpp
-        Runtime/Source/Core/Application.cpp
-        Runtime/Source/Core/Log.cpp
-        Runtime/Source/Core/Layer.cpp
-        Runtime/Source/Core/Window.cpp
-        Runtime/Source/Core/LayerStack.cpp
-        Runtime/Source/Core/OrthographicCameraController.cpp
-        Runtime/Source/GUI/ImGuiLayer.cpp
+file(GLOB YAML_CPP_SRC Plugins/yaml/src/*.cpp)
+add_library(yaml STATIC ${YAML_CPP_SRC})
+target_include_directories(yaml PUBLIC Plugins/yaml/include)
 
-        Runtime/Platform/MacOS/MacWindow.cpp
-        Runtime/Platform/MacOS/MacInput.cpp
+file(GLOB_RECURSE CORE_CPP_SRC CONFIGURE_DEPENDS Runtime/*.cpp)
 
-        Runtime/Source/Renderer/Shader.cpp
-        Runtime/Source/Renderer/Texture.cpp
-        Runtime/Source/Renderer/RendererAPI.cpp
-        Runtime/Source/Renderer/Renderer.cpp
-        Runtime/Source/Renderer/Renderer2D.cpp
-        Runtime/Source/Renderer/Buffer.cpp
-        Runtime/Source/Renderer/VertexArray.cpp
-        Runtime/Source/Renderer/RenderCommand.cpp
-        Runtime/Source/Renderer/OrthographicCamera.cpp
-        Runtime/Source/Renderer/GraphicsContext.cpp
-        Runtime/Source/Renderer/FrameBuffer.cpp
-
-        Runtime/Platform/OpenGL/OpenGLShader.cpp
-        Runtime/Platform/OpenGL/OpenGLTexture.cpp
-        Runtime/Platform/OpenGL/OpenGLRendererAPI.cpp
-        Runtime/Platform/OpenGL/OpenGLContext.cpp
-        Runtime/Platform/OpenGL/OpenGLBuffer.cpp
-        Runtime/Platform/OpenGL/OpenGLVertexArray.cpp
-        Runtime/Platform/OpenGL/OpenGLFrameBuffer.cpp
-
-        Runtime/Source/Scene/Scene.cpp
-        Runtime/Source/Scene/Entity.cpp
-        Runtime/Source/Scene/SceneCamera.cpp
-
+add_library(source SHARED ${CORE_CPP_SRC}
         Plugins/glad/src/glad.c
         Plugins/stb/include/stb_image.cpp
 
@@ -50,21 +20,21 @@ add_library(source SHARED
         Plugins/imgui/imgui_widgets.cpp
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
-        Plugins/imgui/backends/imgui_impl_opengl3.cpp
-        Runtime/Source/Scene/ScriptableEntity.h
-)
+        Plugins/imgui/backends/imgui_impl_opengl3.cpp)
 
 target_include_directories(source PUBLIC
         Runtime
         Plugins/glm
         Plugins/imgui
         Plugins/stb/include
+        Plugins/yaml/include
         Plugins/entt/include
         Plugins/glfw/include
         Plugins/glad/include
         Plugins/spdlog/include)
 
 target_link_libraries(source PUBLIC
+        yaml
         ${CMAKE_SOURCE_DIR}/Plugins/glfw/lib-arm64/libglfw3.a
         "-framework Cocoa"
         "-framework OpenGL"
@@ -75,9 +45,6 @@ add_executable(Astraia
         Editor/main.cpp
         Editor/Source/Sandbox/ExampleLayer.cpp
         Editor/Source/Sandbox/Sandbox2D.cpp
-        Editor/Source/Core/EditorLayer.cpp
-        Runtime/Source/Panel/SceneHierarchyPanel.cpp
-        Runtime/Source/Panel/SceneHierarchyPanel.h
-)
+        Editor/Source/Core/EditorLayer.cpp)
 
 target_link_libraries(Astraia PRIVATE source)
