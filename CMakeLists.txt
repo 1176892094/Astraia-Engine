@@ -21,7 +21,8 @@ add_library(source SHARED ${CORE_CPP_SRC}
         Plugins/imgui/imgui_demo.cpp
         Plugins/imgui/backends/imgui_impl_glfw.cpp
         Plugins/imgui/backends/imgui_impl_opengl3.cpp
-        Plugins/ImGuizmo/ImGuizmo.cpp)
+        Plugins/ImGuizmo/ImGuizmo.cpp
+)
 
 target_include_directories(source PUBLIC
         Runtime
