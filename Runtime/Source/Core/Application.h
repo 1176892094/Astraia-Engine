@@ -10,10 +10,22 @@ int main(int argc, char **argv);
 
 namespace Engine
 {
+    struct ApplicationCommandLineArgs
+    {
+        int Count = 0;
+        char **Args = nullptr;
+
+        const char *operator[](int index) const
+        {
+            HZ_CORE_ASSERT(index < Count);
+            return Args[index];
+        }
+    };
+
     class Application
     {
     public:
-        Application(const std::string &name = "Astraia Engine");
+        Application(const std::string &name = "Astraia Engine", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 
         virtual ~Application();
 
@@ -40,6 +52,11 @@ namespace Engine
             return *s_Instance;
         }
 
+        ApplicationCommandLineArgs GetCommandLineArgs() const
+        {
+            return m_CommandLineArgs;
+        }
+
     private:
         void Run();
 
@@ -47,6 +64,7 @@ namespace Engine
 
         bool OnWindowResize(WindowResizeEvent &e);
 
+        ApplicationCommandLineArgs m_CommandLineArgs;
         Scope<Window> m_Window;
         ImGuiLayer *m_ImGuiLayer;
         bool m_Running = true;
@@ -59,5 +77,5 @@ namespace Engine
         friend int ::main(int argc, char **argv);
     };
 
-    Application *CreateApplication();
+    Application *CreateApplication(ApplicationCommandLineArgs args);
 }

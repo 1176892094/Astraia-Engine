@@ -5,7 +5,7 @@
 int main(int argc, char **argv)
 {
     Engine::Log::Init();
-    auto app = Engine::CreateApplication();
+    auto app = Engine::CreateApplication({argc, argv});
     app->Run();
     delete app;
 }
@@ -15,7 +15,7 @@ namespace Engine
     class Sandbox : public Application
     {
     public:
-        Sandbox() : Application("Astraia Engine")
+        Sandbox(ApplicationCommandLineArgs args) : Application("Astraia Engine", args)
         {
             //PushLayer(new Sandbox2D());
             PushLayer(new EditorLayer());
@@ -24,8 +24,8 @@ namespace Engine
         ~Sandbox() = default;
     };
 
-    Application *Engine::CreateApplication()
+    Application *Engine::CreateApplication(ApplicationCommandLineArgs args)
     {
-        return new Sandbox();
+        return new Sandbox(args);
     }
 }
