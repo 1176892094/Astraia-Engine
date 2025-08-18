@@ -224,7 +224,7 @@ namespace Engine
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
+
         // GLenum attachmentType;
         // switch (spec.TextureFormat)
         // {
