@@ -210,35 +210,44 @@ namespace Engine
         auto &spec = m_ColorAttachmentSpecifications[attachmentIndex];
 
 
-        glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-
-        if (spec.TextureFormat == FramebufferTextureFormat::RED_INTEGER)
-        {
-            int clearValue = value;
-            glClearBufferiv(GL_COLOR, attachmentIndex, &clearValue);
-        }
-        else if (spec.TextureFormat == FramebufferTextureFormat::RGBA8)
-        {
-            float clearColor[4] = {0.0f, 0.0f, 0.0f, 0.0f}; // 可改为你想要的颜色
-            glClearBufferfv(GL_COLOR, attachmentIndex, clearColor);
-        }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        // GLenum attachmentType;
-        // switch (spec.TextureFormat)
+        // glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+        //
+        // if (spec.TextureFormat == FramebufferTextureFormat::RED_INTEGER)
         // {
-        //     case FramebufferTextureFormat::RGBA8:
-        //         attachmentType = GL_RGBA8;
-        //         break;
-        //     case FramebufferTextureFormat::RED_INTEGER:
-        //         attachmentType = GL_RED_INTEGER;
-        //         break;
-        //     default:
-        //         HZ_CORE_ASSERT(false);
-        //         return;
+        //     int clearValue = value;
+        //     glClearBufferiv(GL_COLOR, attachmentIndex, &clearValue);
+        // }
+        // else if (spec.TextureFormat == FramebufferTextureFormat::RGBA8)
+        // {
+        //     float clearColor[4] = {0.0f, 0.0f, 0.0f, 0.0f}; // 可改为你想要的颜色
+        //     glClearBufferfv(GL_COLOR, attachmentIndex, clearColor);
         // }
         //
+        // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        GLenum attachmentType;
+        switch (spec.TextureFormat)
+        {
+            case FramebufferTextureFormat::RGBA8:
+                attachmentType = GL_RGBA8;
+                break;
+            case FramebufferTextureFormat::RED_INTEGER:
+                attachmentType = GL_RED_INTEGER;
+                break;
+            default:
+                HZ_CORE_ASSERT(false);
+                return;
+        }
+
         // glClearTexImage(m_ColorAttachments[attachmentIndex], 0, attachmentType, GL_INT, &value);
+
+        // 获取纹理尺寸
+        GLint width, height;
+        glBindTexture(GL_TEXTURE_2D, m_ColorAttachments[attachmentIndex]);
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+
+        std::vector<GLint> data(width * height, value);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,  attachmentType, GL_INT, data.data());
     }
 }
