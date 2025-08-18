@@ -1,4 +1,5 @@
 #pragma once
+#include "Source/Renderer/Texture.h"
 
 namespace Engine
 {
@@ -11,5 +12,8 @@ namespace Engine
 
     private:
         std::filesystem::path m_CurrentDirectory;
+
+        Ref<Texture2D> m_DirectoryIcon;
+        Ref<Texture2D> m_FileIcon;
     };
 }

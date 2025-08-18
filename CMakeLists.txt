@@ -3,6 +3,7 @@ project(Astraia)
 
 set(CMAKE_CXX_STANDARD 20)
 file(COPY ${CMAKE_SOURCE_DIR}/Editor/Resource DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/Editor/Assets DESTINATION ${CMAKE_BINARY_DIR})
 
 file(GLOB YAML_CPP_SRC Plugins/yaml/src/*.cpp)
 add_library(yaml STATIC ${YAML_CPP_SRC})
