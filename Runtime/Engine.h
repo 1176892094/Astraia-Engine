@@ -34,3 +34,4 @@
 #include "Source/Scene/ScriptableEntity.h"
 #include "Source/Scene/SceneSerializer.h"
 #include "Source/Panel/SceneHierarchyPanel.h"
+#include "Source/Panel/ContentBrowserPanel.h"

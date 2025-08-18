@@ -60,5 +60,6 @@ namespace Engine
         int m_GizmoType = -1;
 
         SceneHierarchyPanel m_SceneHierarchyPanel;
+        ContentBrowserPanel m_ContentBrowserPanel;
     };
 }
