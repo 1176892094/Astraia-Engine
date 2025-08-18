@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine.h"
+#include "Source/Events/KeyEvent.h"
 
 namespace Engine
 {
@@ -22,6 +23,13 @@ namespace Engine
         void OnEvent(Event &e) override;
 
     private:
+
+        bool OnKeyPressed(KeyPressedEvent& e);
+
+        void NewScene();
+        void OpenScene();
+        void SaveSceneAs();
+
         OrthographicCameraController m_CameraController;
 
         // Temp

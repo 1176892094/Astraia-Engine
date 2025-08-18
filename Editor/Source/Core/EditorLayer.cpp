@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Source/Utils/PlatformUtils.h"
+
 namespace Engine
 {
     EditorLayer::EditorLayer()
@@ -14,7 +16,7 @@ namespace Engine
     {
         HZ_PROFILE_FUNCTION();
 
-        m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
+        m_CheckerboardTexture = Texture2D::Create("Resource/Textures/Checkerboard.png");
 
         FramebufferSpecification fbSpec;
         fbSpec.Width = 1280;
@@ -23,12 +25,13 @@ namespace Engine
 
         m_ActiveScene = CreateRef<Scene>();
 
+#if 0
         // Entity
         auto square = m_ActiveScene->CreateEntity("Green Square");
         square.AddComponent<SpriteRendererComponent>(glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
 
         auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-        redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+        redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{1.0f, 0.0f, 0.0f, 1.0f});
 
         m_SquareEntity = square;
 
@@ -42,21 +45,21 @@ namespace Engine
         class CameraController : public ScriptableEntity
         {
         public:
-            void OnCreate() override
+            virtual void OnCreate() override
             {
-                auto& translation = GetComponent<TransformComponent>().Translation;
+                auto &translation = GetComponent<TransformComponent>().Translation;
                 translation.x = rand() % 10 - 5.0f;
             }
 
-            void OnDestroy() override
+            virtual void OnDestroy() override
             {
             }
 
-            void OnUpdate(Timestep ts) override
+            virtual void OnUpdate(Timestep ts) override
             {
-                auto& translation = GetComponent<TransformComponent>().Translation;
-                float speed = 5.0f;
+                auto &translation = GetComponent<TransformComponent>().Translation;
 
+                float speed = 5.0f;
 
                 if (Input::IsKeyPressed(Key::A))
                     translation.x -= speed * ts;
@@ -71,6 +74,7 @@ namespace Engine
 
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
         m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
@@ -154,7 +158,7 @@ namespace Engine
 
         // DockSpace
         ImGuiIO &io = ImGui::GetIO();
-        ImGuiStyle& style = ImGui::GetStyle();
+        ImGuiStyle &style = ImGui::GetStyle();
         float minWinSizeX = style.WindowMinSize.x;
         style.WindowMinSize.x = 370.0f;
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -164,26 +168,22 @@ namespace Engine
         }
 
         style.WindowMinSize.x = minWinSizeX;
-        
+
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::BeginMenu("File"))
             {
                 // Disabling fullscreen would allow the window to be moved to the front of other windows,
                 // which we can't undo at the moment without finer window depth/z control.
-                //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+                //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
+                if (ImGui::MenuItem("New", "Ctrl+N"))
+                    NewScene();
 
-                if (ImGui::MenuItem("Serialize"))
-                {
-                    SceneSerializer serializer(m_ActiveScene);
-                    serializer.Serialize("Resource/Example.yaml");
-                }
+                if (ImGui::MenuItem("Open...", "Ctrl+O"))
+                    OpenScene();
 
-                if (ImGui::MenuItem("Deserialize"))
-                {
-                    SceneSerializer serializer(m_ActiveScene);
-                    serializer.Deserialize("Resource/Example.yaml");
-                }
+                if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+                    SaveSceneAs();
 
                 if (ImGui::MenuItem("Exit"))
                     Application::Get().Close();
@@ -194,7 +194,8 @@ namespace Engine
         }
 
         m_SceneHierarchyPanel.OnImGuiRender();
-        ImGui::Begin("Settings");
+
+        ImGui::Begin("Stats");
 
         auto stats = Renderer2D::GetStats();
         ImGui::Text("Renderer2D Stats:");
@@ -216,7 +217,7 @@ namespace Engine
         m_ViewportSize = {viewportPanelSize.x, viewportPanelSize.y};
 
         uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-        ImGui::Image(textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+        ImGui::Image(reinterpret_cast<void *>(textureID), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
         ImGui::End();
         ImGui::PopStyleVar();
 
@@ -226,5 +227,73 @@ namespace Engine
     void EditorLayer::OnEvent(Event &e)
     {
         m_CameraController.OnEvent(e);
+
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<KeyPressedEvent>(HZ_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+    }
+
+    bool EditorLayer::OnKeyPressed(KeyPressedEvent &e)
+    {
+        // Shortcuts
+        if (e.IsRepeat())
+            return false;
+
+        bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+        bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+        switch (e.GetKeyCode())
+        {
+            case Key::N:
+            {
+                if (control)
+                    NewScene();
+
+                break;
+            }
+            case Key::O:
+            {
+                if (control)
+                    OpenScene();
+
+                break;
+            }
+            case Key::S:
+            {
+                if (control && shift)
+                    SaveSceneAs();
+
+                break;
+            }
+        }
+    }
+
+    void EditorLayer::NewScene()
+    {
+        m_ActiveScene = CreateRef<Scene>();
+        m_ActiveScene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+    }
+
+    void EditorLayer::OpenScene()
+    {
+        std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.hazel)\0*.hazel\0");
+        if (!filepath.empty())
+        {
+            m_ActiveScene = CreateRef<Scene>();
+            m_ActiveScene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+            m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+            SceneSerializer serializer(m_ActiveScene);
+            serializer.Deserialize(filepath);
+        }
+    }
+
+    void EditorLayer::SaveSceneAs()
+    {
+        std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.hazel)\0*.hazel\0");
+        if (!filepath.empty())
+        {
+            SceneSerializer serializer(m_ActiveScene);
+            serializer.Serialize(filepath);
+        }
     }
 }
