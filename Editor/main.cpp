@@ -1,6 +1,5 @@
 #include "Engine.h"
 #include "Source/Core/EditorLayer.h"
-#include "Source/Sandbox/Sandbox2D.h"
 
 
 int main(int argc, char **argv)

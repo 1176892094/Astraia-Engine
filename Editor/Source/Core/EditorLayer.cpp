@@ -19,6 +19,7 @@ namespace Engine
         m_CheckerboardTexture = Texture2D::Create("Resource/Textures/Checkerboard.png");
 
         FramebufferSpecification fbSpec;
+        fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth,FramebufferTextureFormat::None};
         fbSpec.Width = 1280;
         fbSpec.Height = 720;
         m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -240,7 +241,7 @@ namespace Engine
             // glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
 
             // Editor camera
-            const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+            const glm::mat4 &cameraProjection = m_EditorCamera.GetProjection();
             glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
             // Entity transform
@@ -256,7 +257,7 @@ namespace Engine
 
             float snapValues[3] = {snapValue, snapValue, snapValue};
 
-            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),(ImGuizmo::OPERATION) m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),nullptr, snap ? snapValues : nullptr);
+            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION) m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
 
             if (ImGuizmo::IsUsing())
             {
