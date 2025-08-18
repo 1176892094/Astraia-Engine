@@ -28,6 +28,7 @@ target_include_directories(source PUBLIC
         Runtime
         Plugins/glm
         Plugins/imgui
+        Plugins/box2d
         Plugins/ImGuizmo
         Plugins/stb/include
         Plugins/yaml/include
