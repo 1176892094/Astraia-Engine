@@ -7,7 +7,7 @@
 
 namespace Engine
 {
-    std::string FileDialogs::OpenFile(const char *filter)
+  	std::optional<std::string>  FileDialogs::OpenFile(const char *filter)
     {
         id panelClass = (id) objc_getClass("NSOpenPanel");
         id panel = ((id(*)(id, SEL)) objc_msgSend)(panelClass, sel_registerName("openPanel"));
@@ -26,10 +26,10 @@ namespace Engine
             return std::string(cstr);
         }
 
-        return std::string();
+  	    return std::nullopt;
     }
 
-    std::string FileDialogs::SaveFile(const char *filter)
+  	std::optional<std::string> FileDialogs::SaveFile(const char *filter)
     {
         id panelClass = (id) objc_getClass("NSSavePanel");
         id panel = ((id(*)(id, SEL)) objc_msgSend)(panelClass, sel_registerName("savePanel"));
@@ -44,6 +44,6 @@ namespace Engine
             return std::string(cstr);
         }
 
-        return std::string();
+  	    return std::nullopt;
     }
 }
