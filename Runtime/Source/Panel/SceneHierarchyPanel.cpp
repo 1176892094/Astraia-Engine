@@ -12,17 +12,17 @@ namespace Engine
     SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &context)
     {
         SetContext(context);
-        m_SelectionContext = {};
     }
 
     void SceneHierarchyPanel::SetContext(const Ref<Scene> &context)
     {
         m_Context = context;
+        m_SelectionContext = {};
     }
 
     void SceneHierarchyPanel::OnImGuiRender()
     {
-        ImGui::Begin("Hierarchy");
+        ImGui::Begin("Scene Hierarchy");
 
         m_Context->m_Registry.each([&](auto entityID)
         {
@@ -111,7 +111,7 @@ namespace Engine
         ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
 
-        float lineHeight = ImGui::GetFontSize() + GImGui->Style.FramePadding.y * 2.0f;
+        float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
         ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
 
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
@@ -172,7 +172,7 @@ namespace Engine
             ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
-            float lineHeight = ImGui::GetFontSize() + GImGui->Style.FramePadding.y * 2.0f;
+            float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
             ImGui::Separator();
             bool open = ImGui::TreeNodeEx((void *) typeid(T).hash_code(), treeNodeFlags, name.c_str());
             ImGui::PopStyleVar(
@@ -211,7 +211,7 @@ namespace Engine
 
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
-            strncpy(buffer, tag.c_str(), sizeof(buffer));
+            std::strncpy(buffer, tag.c_str(), sizeof(buffer));
             if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
             {
                 tag = std::string(buffer);
@@ -324,20 +324,18 @@ namespace Engine
             ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
             if (ImGui::BeginDragDropTarget())
             {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
                 {
-                    const wchar_t* path = (const wchar_t*)payload->Data;
+                    const wchar_t *path = (const wchar_t *) payload->Data;
                     std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
                     Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
-                        if (texture->IsLoaded())
-                            component.Texture = texture;
-                        else
-                            HZ_WARN("Could not load texture {0}", texturePath.filename().string());
+                    if (texture->IsLoaded())
+                        component.Texture = texture;
+                    else
+                        HZ_WARN("Could not load texture {0}", texturePath.filename().string());
                 }
                 ImGui::EndDragDropTarget();
             }
-
-
 
             ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
         });

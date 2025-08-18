@@ -8,7 +8,7 @@ namespace Engine
 {
     extern const std::filesystem::path g_AssetPath;
 
-    EditorLayer::EditorLayer(): Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({0.2f, 0.3f, 0.8f, 1.0f})
+    EditorLayer::EditorLayer() : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({0.2f, 0.3f, 0.8f, 1.0f})
     {
     }
 
@@ -282,6 +282,7 @@ namespace Engine
             ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
             // Camera
+
             // Runtime camera from entity
             // auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
             // const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
@@ -305,7 +306,9 @@ namespace Engine
 
             float snapValues[3] = {snapValue, snapValue, snapValue};
 
-            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION) m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+                                 (ImGuizmo::OPERATION) m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+                                 nullptr, snap ? snapValues : nullptr);
 
             if (ImGuizmo::IsUsing())
             {
@@ -319,6 +322,9 @@ namespace Engine
             }
         }
 
+
+        ImGui::End();
+        ImGui::PopStyleVar();
 
         UI_Toolbar();
 
@@ -456,7 +462,7 @@ namespace Engine
         if (serializer.Deserialize(path.string()))
         {
             m_ActiveScene = newScene;
-            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_ActiveScene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
             m_SceneHierarchyPanel.SetContext(m_ActiveScene);
         }
     }
@@ -479,6 +485,5 @@ namespace Engine
     void EditorLayer::OnSceneStop()
     {
         m_SceneState = SceneState::Edit;
-
     }
 }
