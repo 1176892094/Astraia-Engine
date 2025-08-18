@@ -201,6 +201,44 @@ namespace Engine
         int pixelData;
         glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
         return pixelData;
+    }
 
+    void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+    {
+        HZ_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size());
+
+        auto &spec = m_ColorAttachmentSpecifications[attachmentIndex];
+
+
+        glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+
+        if (spec.TextureFormat == FramebufferTextureFormat::RED_INTEGER)
+        {
+            int clearValue = value;
+            glClearBufferiv(GL_COLOR, attachmentIndex, &clearValue);
+        }
+        else if (spec.TextureFormat == FramebufferTextureFormat::RGBA8)
+        {
+            float clearColor[4] = {0.0f, 0.0f, 0.0f, 0.0f}; // 可改为你想要的颜色
+            glClearBufferfv(GL_COLOR, attachmentIndex, clearColor);
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        
+        // GLenum attachmentType;
+        // switch (spec.TextureFormat)
+        // {
+        //     case FramebufferTextureFormat::RGBA8:
+        //         attachmentType = GL_RGBA8;
+        //         break;
+        //     case FramebufferTextureFormat::RED_INTEGER:
+        //         attachmentType = GL_RED_INTEGER;
+        //         break;
+        //     default:
+        //         HZ_CORE_ASSERT(false);
+        //         return;
+        // }
+        //
+        // glClearTexImage(m_ColorAttachments[attachmentIndex], 0, attachmentType, GL_INT, &value);
     }
 }
