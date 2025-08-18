@@ -1,12 +1,13 @@
 #include "EditorLayer.h"
 #include <imgui.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuizmo.h"
 #include "Source/Utils/PlatformUtils.h"
 
 namespace Engine
 {
+    extern const std::filesystem::path g_AssetPath;
+
     EditorLayer::EditorLayer()
         : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({0.2f, 0.3f, 0.8f, 1.0f})
     {
@@ -19,7 +20,7 @@ namespace Engine
         m_CheckerboardTexture = Texture2D::Create("Resource/Textures/Checkerboard.png");
 
         FramebufferSpecification fbSpec;
-        fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+        fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth};
         fbSpec.Width = 1280;
         fbSpec.Height = 720;
         m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -117,18 +118,18 @@ namespace Engine
         // Update scene
         m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
-        auto[mx, my] = ImGui::GetMousePos();
+        auto [mx, my] = ImGui::GetMousePos();
         mx -= m_ViewportBounds[0].x;
         my -= m_ViewportBounds[0].y;
         glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
         my = viewportSize.y - my;
-        int mouseX = (int)mx;
-        int mouseY = (int)my;
+        int mouseX = (int) mx;
+        int mouseY = (int) my;
 
-        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
         {
             int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-            m_HoveredEntity = pixelData == 1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+            m_HoveredEntity = pixelData == 1 ? Entity() : Entity((entt::entity) pixelData, m_ActiveScene.get());
         }
 
         m_Framebuffer->Unbind();
@@ -236,8 +237,8 @@ namespace Engine
         auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
         auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
         auto viewportOffset = ImGui::GetWindowPos();
-        m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-        m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+        m_ViewportBounds[0] = {viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y};
+        m_ViewportBounds[1] = {viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y};
 
         m_ViewportFocused = ImGui::IsWindowFocused();
         m_ViewportHovered = ImGui::IsWindowHovered();
@@ -248,6 +249,16 @@ namespace Engine
 
         uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
         ImGui::Image(reinterpret_cast<void *>(textureID), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
+
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+            {
+                const wchar_t *path = (const wchar_t *) payload->Data;
+                OpenScene(std::filesystem::path(g_AssetPath) / path);
+            }
+            ImGui::EndDragDropTarget();
+        }
 
         // Gizmos
         Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -366,7 +377,7 @@ namespace Engine
         }
     }
 
-    bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+    bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent &e)
     {
         if (e.GetMouseButton() == Mouse::ButtonLeft)
         {
@@ -386,25 +397,30 @@ namespace Engine
 
     void EditorLayer::OpenScene()
     {
-        std::optional<std::string> filepath = FileDialogs::OpenFile("Hazel Scene (*.hazel)\0*.hazel\0");
-        if (filepath)
+        std::string filepath = FileDialogs::OpenFile("Engine Scene (*.scene)\0*.scene\0");
+        if (!filepath.empty())
         {
-            m_ActiveScene = CreateRef<Scene>();
-            m_ActiveScene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
-            m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-            SceneSerializer serializer(m_ActiveScene);
-            serializer.Deserialize(*filepath);
+            OpenScene(filepath);
         }
+    }
+
+    void EditorLayer::OpenScene(const std::filesystem::path &path)
+    {
+        m_ActiveScene = CreateRef<Scene>();
+        m_ActiveScene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        SceneSerializer serializer(m_ActiveScene);
+        serializer.Deserialize(path.string());
     }
 
     void EditorLayer::SaveSceneAs()
     {
-        std::optional<std::string> filepath = FileDialogs::SaveFile("Hazel Scene (*.hazel)\0*.hazel\0");
-        if (filepath)
+        std::string filepath = FileDialogs::SaveFile("Engine Scene (*.scene)\0*.scene\0");
+        if (!filepath.empty())
         {
             SceneSerializer serializer(m_ActiveScene);
-            serializer.Serialize(*filepath);
+            serializer.Serialize(filepath);
         }
     }
 }
