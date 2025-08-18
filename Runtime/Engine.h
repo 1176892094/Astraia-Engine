@@ -27,6 +27,7 @@
 #include "Source/Renderer/OrthographicCamera.h"
 // -----------------------------------
 
+#include "Source/Math/Math.h"
 #include "Source/Scene/Scene.h"
 #include "Source/Scene/Entity.h"
 #include "Source/Scene/Components.h"
